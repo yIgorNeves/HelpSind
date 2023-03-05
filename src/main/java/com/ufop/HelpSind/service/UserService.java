@@ -10,7 +10,9 @@ public interface UserService extends CrudService<User, Long>{
 	
 	public void saveAdmin(User user);
 	
-	public User read(Integer Cpf);
+	public User read(String Cpf);
+	
+	public User logged();
 	
 	
 

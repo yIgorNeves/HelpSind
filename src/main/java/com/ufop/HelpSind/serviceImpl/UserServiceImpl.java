@@ -2,6 +2,9 @@ package com.ufop.HelpSind.serviceImpl;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +45,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public User read(Integer cpf) {
+	public User read(String cpf) {
 		return userDao.findOneByCpf(cpf);
 	}
 
@@ -111,6 +114,15 @@ public class UserServiceImpl implements UserService{
 			validation.rejectValue("active", "AssertTrue");
 		}
 		
+	}
+
+	@Override
+	public User logged() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+			return null;
+		}
+		return userDao.findOneByNome(auth.getName());		
 	}
 
 	

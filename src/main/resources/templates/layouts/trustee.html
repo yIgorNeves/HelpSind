@@ -17,12 +17,15 @@
 <link rel="stylesheet" th:href="@{/css/scroll.min.css}" />
 <link rel="stylesheet" th:href="@{/css/meu.css}" />
 
-<title th:replace="~{'site/' + ${content} :: title}"></title>
+<title th:replace="'trustee/' + ${content} :: title"></title>
 </head>
-<body id="site">
-	<th:block th:replace="~{layouts/header :: header}" />
-	<th:block th:replace="~{'site/' + ${content} :: content}" />
-	<th:block th:replace="~{layouts/footer :: footer}" />
+<body id="sindico">
+	<th:block th:replace="layouts/header :: header" />
+	<div class="d-flex">
+		<th:block th:replace="layouts/sideBar :: sideBar" />
+		<th:block th:replace="'trustee/' + ${content} :: content" />
+	</div>
+	<th:block th:replace="layouts/footer :: footer" />
 
 	<!-- JavaScript -->
 	<script th:src="@{/js/jquery.min.js}"></script>
@@ -30,6 +33,6 @@
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script th:src="@{/js/scroll.min.js}"></script>
 	<script th:src="@{/js/meu.js}"></script>
-	<th:block th:replace="~{'site/' + ${content} :: jsAdicional}" />
+	<th:block th:replace="'sindico/' + ${conteudo} :: jsAdicional" />
 </body>
 </html>

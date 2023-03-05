@@ -1,14 +1,20 @@
 package com.ufop.HelpSind.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,7 +41,7 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	private String corporateName;
 	
 	@CNPJ
-	private String CNPJ;
+	private String cnpj;
 	
 	@Email
 	@Size(max = 100)
@@ -72,6 +78,10 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	@Enumerated(EnumType.STRING)
 	private State state;
 	
+	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OrderBy(value = "type")
+	private List<Account> accounts = new ArrayList<>();
+	
 
 	public Long getIdCondominium() {
 		return idCondominium;
@@ -89,12 +99,12 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 		this.corporateName = corporateName;
 	}
 
-	public String getCNPJ() {
-		return CNPJ;
+	public String getCnpj() {
+		return cnpj;
 	}
 
-	public void setCNPJ(String cNPJ) {
-		CNPJ = cNPJ;
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
 
 	public String getEmail() {
@@ -169,7 +179,13 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 		this.state = state;
 	}
 
+	public List<Account> getAccounts() {
+		return accounts;
+	}
 
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
 
 	@Override
 	public int compareTo(Condominium o) {

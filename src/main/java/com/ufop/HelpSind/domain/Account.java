@@ -21,12 +21,12 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Table(name = "counts")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Count implements Serializable, Comparable<Count>{
+public class Account implements Serializable, Comparable<Account>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idcount")
-	private Long idCount;
+	@Column(name = "idaccount")
+	private Long idAccount;
 	
 	@Size(min = 1, max = 2)
 	@NotBlank
@@ -44,9 +44,57 @@ public class Count implements Serializable, Comparable<Count>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idcondominium")
 	private Condominium condominium;
+	
+	public Long getIdAccount() {
+		return idAccount;
+	}
+
+	public void setIdAccount(Long idCount) {
+		this.idAccount = idCount;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public BigDecimal getInitialBalance() {
+		return initialBalance;
+	}
+
+	public void setInitialBalance(BigDecimal initialBalance) {
+		this.initialBalance = initialBalance;
+	}
+
+	public BigDecimal getCurrentBalance() {
+		return currentBalance;
+	}
+
+	public void setCurrentBalance(BigDecimal currentBalance) {
+		this.currentBalance = currentBalance;
+	}
+
+	public Condominium getCondominium() {
+		return condominium;
+	}
+
+	public void setCondominium(Condominium condominium) {
+		this.condominium = condominium;
+	}
 
 	@Override
-	public int compareTo(Count o) {
+	public int compareTo(Account o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

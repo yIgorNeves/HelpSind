@@ -49,7 +49,7 @@ public class Movement implements Serializable {
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idcount")
-	private Count count;
+	private Account account;
 	
 	private Boolean reduction;
 
@@ -93,12 +93,12 @@ public class Movement implements Serializable {
 		this.description = description;
 	}
 
-	public Count getCount() {
-		return count;
+	public Account getCount() {
+		return account;
 	}
 
-	public void setCount(Count count) {
-		this.count = count;
+	public void setCount(Account account) {
+		this.account = account;
 	}
 
 	public Boolean getReduction() {
