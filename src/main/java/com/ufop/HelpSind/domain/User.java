@@ -21,8 +21,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -41,15 +39,18 @@ public class User implements Serializable{
 	@Size(min=1, max=100)
 	private String nome;
 	
+	@NotBlank
+	@Size(min = 1, max = 50)
+	private String username;
+	
 	@CPF
 	@NotBlank
 	@Size(min=11, max=11)
 	private String cpf;
 	
-	@NotNull
-	@Min(11)
-	@Max(11)
-	private Integer cellphone;
+	@NotBlank
+	@Size(min=11, max=11)
+	private String cellphone;
 	
 	@NotBlank
 	@Size(min = 4, max = 100)
@@ -61,9 +62,9 @@ public class User implements Serializable{
 	private String email;
 	
 	@ElementCollection(targetClass = Authorization.class)
-	@CollectionTable(name="authorization", joinColumns = @JoinColumn(name="id_user"))
+	@CollectionTable(name="auths", joinColumns = @JoinColumn(name="id_user"))
 	@Enumerated(EnumType.STRING)
-	@Column(name = "authorization")
+	@Column(name = "auth")
 	private Set<Authorization> auth = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -97,11 +98,11 @@ public class User implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public Integer getCellphone() {
+	public String getCellphone() {
 		return cellphone;
 	}
 
-	public void setCellphone(Integer cellphone) {
+	public void setCellphone(String cellphone) {
 		this.cellphone = cellphone;
 	}
 
@@ -144,9 +145,13 @@ public class User implements Serializable{
 	public void setCondominium(Condominium condominium) {
 		this.condominium = condominium;
 	}
-	
-	
-	
 
+	public String getUsername() {
+		return username;
+	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
 }

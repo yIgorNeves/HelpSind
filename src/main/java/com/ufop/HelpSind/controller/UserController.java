@@ -36,13 +36,16 @@ public class UserController {
 	
 	@PostMapping("/cadastrar")
 	public ModelAndView postTrusteeRegister(@Valid @ModelAttribute("trustee") User trustee, BindingResult validation) {
+		trustee.setActive(true);
 		userService.validate(trustee, validation);
 		if (validation.hasErrors()) {
+			System.out.println(validation.getAllErrors());
 			trustee.setId(null);
 			return new ModelAndView("layouts/layoutSite", "content","register");
-		}		
+		}	
+		
 		System.out.println("chegou aqui?");
-		userService.save(trustee);
+		userService.saveTrustee(trustee);
 		return new ModelAndView("redirect:/login?novo");
 	}
 	

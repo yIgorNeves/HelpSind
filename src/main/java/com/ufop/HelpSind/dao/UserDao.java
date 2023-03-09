@@ -7,11 +7,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserDao extends PagingAndSortingRepository<User, Long>, CrudRepository<User, Long>{
 	
-	User findOneByCpf (String cpf);
+	User findByUsername (String username);
 	
-	Boolean existsUserByCpf (String cpf);
+	Boolean existsByUsername(String username);
 	
-	Boolean existsUserByCpfAndId (String cpf, Long id);
+	Boolean existsByUsernameAndIdNot (String username, Long id);
 	
 	User findOneByNome(String name);
 }

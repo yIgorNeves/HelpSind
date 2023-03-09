@@ -9,20 +9,24 @@
 <body>
 	<th:block th:fragment="content">
 		<main role="main" class="container">
+		<div class="m-auto" style="max-width: 350px;">
 			<div th:if="${param.novo}">
 				<div class="alert alert-success">Sua conta foi criada, obrigado!</div>
+			</div>
+			<div th:if="${param.erro}">
+				<div class="alert alert-danger">Usuário ou senha inválidos!</div>
 			</div>
 			<form th:action="@{/entrar}" th:method="post" class="needs-validation" autocomplete="off" novalidate>
 				<div class="card">
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">
 							<div class="form-group">
-								<label>Usuário</label>
+								<label>CPF</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-user"></i></span>
 									</div>
-									<input class="form-control last" type="text" name="username" placeholder="Seu usuário" autofocus="autofocus" required />
+									<input class="form-control last" type="text" name="cpf" placeholder="CPF" autofocus="autofocus" required />
 									<div class="invalid-feedback">Campo obrigatório</div>
 								</div>
 							</div>

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,7 +6,7 @@
 
 </head>
 <body>
-	<th:block th:fragment="conteudo">
+	<th:block th:fragment="content">
 		<main role="main">
 		<h3 class="font-weight-light">Cadastro do Condomínio</h3>
 		<p th:text="${condominium.idCondominium == null} ? 'As informações abaixo serão usadas pelo HelpSind para diversas funcionalidades como, por exemplo, imprimir relatórios e enviar e-mails.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações do condomínio serão atualizadas.')"></p>
@@ -43,13 +42,13 @@
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
-									<label>Telefone</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{telefone}" placeholder="Telefone com DDD" />
-									<div class="invalid-feedback" th:errors="*{telefone}"></div>
+									<label>Telefone</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{phone}" placeholder="Telefone com DDD" />
+									<div class="invalid-feedback" th:errors="*{phone}"></div>
 									<small>Somente números</small>
 								</div>
 								<div class="form-group col-md-6">
-									<label>Celular</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{celular}" placeholder="Celular com DDD" />
-									<div class="invalid-feedback" th:errors="*{celular}"></div>
+									<label>Celular</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{cellphone}" placeholder="Celular com DDD" />
+									<div class="invalid-feedback" th:errors="*{cellphone}"></div>
 									<small>Somente números</small>
 								</div>
 							</div>
@@ -60,22 +59,22 @@
 							</p>
 							<div class="form-row">
 								<div class="form-group col-md-10">
-									<label>Endereço</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{endereco}" placeholder="O endereço do condomínio" />
-									<div class="invalid-feedback" th:errors="*{endereco}"></div>
+									<label>Rua</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{street}" placeholder="Rua" />
+									<div class="invalid-feedback" th:errors="*{street}"></div>
 								</div>
 								<div class="form-group col-md-2">
-									<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{numeroEnd}" placeholder="O nº" />
-									<div class="invalid-feedback" th:errors="*{numeroEnd}"></div>
+									<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{addressNumber}" placeholder="O nº" />
+									<div class="invalid-feedback" th:errors="*{addressNumber}"></div>
 								</div>
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
-									<label>Complemento</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{complementoEnd}" placeholder="Complemento do endereço" />
-									<div class="invalid-feedback" th:errors="*{complementoEnd}"></div>
+									<label>Complemento</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{addressComplement}" placeholder="Complemento do endereço" />
+									<div class="invalid-feedback" th:errors="*{addressComplement}"></div>
 								</div>
 								<div class="form-group col-md-6">
-									<label>Bairro</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{bairro}" placeholder="Bairro ou distrito" />
-									<div class="invalid-feedback" th:errors="*{bairro}"></div>
+									<label>Bairro</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{neighborhood}" placeholder="Bairro ou distrito" />
+									<div class="invalid-feedback" th:errors="*{neighborhood}"></div>
 								</div>
 							</div>
 							<div class="form-row">
@@ -85,15 +84,15 @@
 									<small>Somente números</small>
 								</div>
 								<div class="form-group col-md-4">
-									<label>Município</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{cidade}" placeholder="O município do condomínio" />
-									<div class="invalid-feedback" th:errors="*{cidade}"></div>
+									<label>Município</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{city}" placeholder="O município do condomínio" />
+									<div class="invalid-feedback" th:errors="*{city}"></div>
 								</div>
 								<div class="form-group col-md-4">
-									<label>Estado</label> <select class="custom-select" id="estado" th:errorclass="is-invalid" th:field="*{estado}">
+									<label>Estado</label> <select class="custom-select" id="estado" th:errorclass="is-invalid" th:field="*{state}">
 										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
-										<option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado.nome}"></option>
+										<option th:each="state : ${state}" th:value="${state}" th:text="${state.name}"></option>
 									</select>
-									<div class="invalid-feedback" th:errors="*{estado}"></div>
+									<div class="invalid-feedback" th:errors="*{state}"></div>
 								</div>
 							</div>
 						</li>
@@ -101,7 +100,7 @@
 				</div>
 			</fieldset>
 			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
-			<a class="btn btn-secondary" th:href="@{/sindico}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+			<a class="btn btn-secondary" th:href="@{/trustee}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
 		</form>
 		</main>
 	</th:block>

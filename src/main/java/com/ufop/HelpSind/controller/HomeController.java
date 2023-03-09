@@ -28,11 +28,12 @@ public class HomeController {
 	}
 	
 	@GetMapping("/auth")
-	public String postLogin (Authentication authentication) {
-		String retorno = "redirect:/login?erro";
+	public String posLogin (Authentication authentication) {
+		String retorno = "redirect:/entrar";
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		
 		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("TRUSTEE"))) {
+			System.out.println("alou");
 			retorno = "redirect:/trustee";
 		} else if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("TENANT"))) {
 			retorno = "redirect:/tenant";

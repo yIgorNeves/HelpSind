@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,17 +24,18 @@ import com.ufop.HelpSind.service.UserService;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService, UserDetailsService {
 	
 	@Autowired
 	private UserDao userDao;
 	
-	//@Autowired
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public void save(User user) {
 		if(user.getId() == null) {
+			System.out.println(user.getPassword());
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			userDao.save(user);
 		}
@@ -45,8 +49,8 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-	public User read(String cpf) {
-		return userDao.findOneByCpf(cpf);
+	public User read(String username) {
+		return userDao.findByUsername(username);
 	}
 
 	@Override
@@ -99,18 +103,19 @@ public class UserServiceImpl implements UserService{
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public void validate(User user, BindingResult validation) {
 		if(user.getId() == null) {
-			if(user.getCpf() != null && userDao.existsUserByCpf(user.getCpf())) {
-				validation.rejectValue("cpf", "Unique");
+			if(user.getUsername() != null && userDao.existsByUsername(user.getUsername())) {
+				validation.rejectValue("username", "Unique");
 			}
 		}
 		
 		else {
-			if(user.getCpf() != null && userDao.existsUserByCpfAndId(user.getCpf(), user.getId())) {
-				validation.rejectValue("cpf", "Unique");
+			if(user.getUsername() != null && userDao.existsByUsernameAndIdNot(user.getUsername(), user.getId())) {
+				validation.rejectValue("username", "Unique");
 			}
 		}
-		
+		System.out.println("usuario ativo " + user.getActive());
 		if(!user.getActive()) {
+			System.out.println();
 			validation.rejectValue("active", "AssertTrue");
 		}
 		
@@ -124,6 +129,14 @@ public class UserServiceImpl implements UserService{
 		}
 		return userDao.findOneByNome(auth.getName());		
 	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 	
 

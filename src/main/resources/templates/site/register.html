@@ -31,9 +31,16 @@
 							</div>
 							<div class="form-row">
 								<div class="form-group col-md-6">
+									<label>Usuario</label> <input autofocus class="form-control" type="text" th:errorclass="is-invalid" th:field="*{username}" placeholder="Digite seu nome de usuario" />
+									<div class="invalid-feedback" th:errors="*{username}"></div>
+								</div>								
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
 									<label>CPF</label>
 									<div class="input-group">
-										<input autocomplete="off" class="form-control last" type="number" th:errorclass="is-invalid" th:field="*{cpf}" placeholder="Seu CPF" maxlength="11"/>
+										<input autocomplete="off" class="form-control last" type="number" th:errorclass="is-invalid" th:field="*{cpf}" placeholder="Seu CPF" maxlength="11"
+										oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
 										<div class="invalid-feedback" th:errors="*{cpf}"></div>
 									</div>
 								</div>
@@ -47,13 +54,14 @@
 								<div class="form-group col-md-6">
 									<label>Celular</label>
 									<div class="input-group">
-										<input autocomplete="off" class="form-control last" type="number"  th:field="*{cellphone}" placeholder="DDD + Numero do seu celular" maxlength="11"/>
+										<input autocomplete="off" class="form-control last" type="number"  th:field="*{cellphone}" placeholder="DDD + Numero do seu celular"  maxlength="11"
+										oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
 										<div class="invalid-feedback" th:errors="*{cellphone}"></div>
 									</div>								
 								</div>
 							</div>
 							
-							<input class="custom-control-input" type="checkbox" th:errorclass="is-invalid" name="active" id="active" th:field=*{active} checked="checked"  hidden="true"/>
+							<input class="custom-control-input" type="checkbox" th:errorclass="is-invalid" name="active" id="active" th:field=*{active} checked="checked"  hidden="true" value="true"/>
 							
 						</li>
 					</ul>

@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 
 @EnableWebSecurity
-public class WebSecConfing extends WebSecurityConfiguration{
+public class WebSecurityConfig extends WebSecurityConfiguration{
 
 	@Autowired
 	DataSource dataSource;
@@ -27,19 +27,22 @@ public class WebSecConfing extends WebSecurityConfiguration{
         		.requestMatchers("/trustee/**").hasAuthority("TRUSTEE")
         		.requestMatchers("/tenant/**").hasAuthority("TENANT")
         		.requestMatchers("/admin/**").hasAuthority("ADMIN")
-        		.and().formLogin()
-        			.loginPage("/login")
+        		.requestMatchers("/auth/**", "/account/cadastro/**").authenticated()
+    		.and().formLogin()
+        			.loginPage("/entrar")
+        			.failureUrl("/entrar?erro")
+        			.successForwardUrl("/trustee")
         			.defaultSuccessUrl("/auth")
         			.usernameParameter("cpf").passwordParameter("password")
-        		.and().logout()
+    		.and().logout()
         			.logoutSuccessUrl("/entrar?sair")
         			.logoutUrl("/sair")
         			.invalidateHttpSession(true)
         			.clearAuthentication(true)
-        		.and().rememberMe()
+    		.and().rememberMe()
         			.tokenRepository(persistentTokenRepository())
         			.tokenValiditySeconds(120960)
-        		.and().csrf();
+    		.and().csrf();
         return http.build();
 	}
 	
@@ -49,6 +52,10 @@ public class WebSecConfing extends WebSecurityConfiguration{
 			.usersByUsernameQuery("select cpf,password,active from users where cpf=?")
 			.authoritiesByUsernameQuery(
 					"select cpf,auth from users join auth on id = id_user where cpf=?");
+		 auth
+         .inMemoryAuthentication()
+             .withUser("user").password("123456").roles("USER");
+
 		return auth.build();
 	}
 	
@@ -65,5 +72,6 @@ public class WebSecConfing extends WebSecurityConfiguration{
 		auth.setTargetUrlParameter("targetUrl");
 		return auth;
 	}
+	
 	
 }

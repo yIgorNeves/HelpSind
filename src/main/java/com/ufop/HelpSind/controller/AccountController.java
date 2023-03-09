@@ -17,7 +17,7 @@ import com.ufop.HelpSind.enums.BankAccountType;
 import com.ufop.HelpSind.service.AccountService;
 
 @Controller
-@RequestMapping("trustee/count")
+@RequestMapping("trustee/account")
 public class AccountController {
 	
 	//@Autowired

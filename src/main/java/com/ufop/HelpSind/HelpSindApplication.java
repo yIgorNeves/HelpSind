@@ -13,5 +13,9 @@ public class HelpSindApplication {
 		SpringApplication.run(HelpSindApplication.class, args);
 	}
 	
+	@Bean
+    PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
 	
 }
