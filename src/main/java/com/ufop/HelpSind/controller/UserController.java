@@ -43,8 +43,6 @@ public class UserController {
 			trustee.setId(null);
 			return new ModelAndView("layouts/layoutSite", "content","register");
 		}	
-		
-		System.out.println("chegou aqui?");
 		userService.saveTrustee(trustee);
 		return new ModelAndView("redirect:/login?novo");
 	}

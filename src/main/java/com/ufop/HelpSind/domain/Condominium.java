@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -86,6 +87,12 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	@OrderBy(value = "type")
 	private List<Account> accounts = new ArrayList<>();
 	
+	@OneToOne(mappedBy = "condominium", fetch = FetchType.LAZY)
+	private User trustee;
+	
+	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OrderBy(value = "name")
+	private List<Person> people = new ArrayList<>();
 
 	public Long getIdCondominium() {
 		return idCondominium;
@@ -197,6 +204,22 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 
 	public void setStreet(String street) {
 		this.street = street;
+	}
+
+	public User getTrustee() {
+		return trustee;
+	}
+
+	public void setTrustee(User trustee) {
+		this.trustee = trustee;
+	}
+
+	public List<Person> getPeople() {
+		return people;
+	}
+
+	public void setPeople(List<Person> people) {
+		this.people = people;
 	}
 
 	@Override

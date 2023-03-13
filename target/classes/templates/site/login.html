@@ -16,7 +16,7 @@
 			<div th:if="${param.erro}">
 				<div class="alert alert-danger">Usuário ou senha inválidos!</div>
 			</div>
-			<form th:action="@{/entrar}" th:method="post" class="needs-validation" autocomplete="off" novalidate>
+			<form th:action="@{/auth}" th:method="post" class="needs-validation" autocomplete="off" novalidate>
 				<div class="card">
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">

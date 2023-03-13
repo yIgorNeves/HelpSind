@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
@@ -17,7 +19,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfiguration{
-
+	
 	@Autowired
 	DataSource dataSource;
 	
@@ -31,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration{
     		.and().formLogin()
         			.loginPage("/entrar")
         			.failureUrl("/entrar?erro")
-        			.successForwardUrl("/trustee")
+        			.successForwardUrl("/auth")
         			.defaultSuccessUrl("/auth")
         			.usernameParameter("cpf").passwordParameter("password")
     		.and().logout()
@@ -73,5 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfiguration{
 		return auth;
 	}
 	
+	@Bean
+	UserDetailsManager users(DataSource dataSource) {
+		JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
 	
+		return users;
+	}
 }
