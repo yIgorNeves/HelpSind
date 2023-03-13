@@ -37,7 +37,7 @@ public class User implements Serializable{
 	
 	@NotBlank
 	@Size(min=1, max=100)
-	private String nome;
+	private String name;
 	
 	@NotBlank
 	@Size(min = 1, max = 50)
@@ -83,11 +83,11 @@ public class User implements Serializable{
 	}
 
 	public String getNome() {
-		return nome;
+		return name;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.name = nome;
 	}
 
 	public String getCpf() {
