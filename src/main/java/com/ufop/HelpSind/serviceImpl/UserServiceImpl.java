@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
 		if (auth == null || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
 			return null;
 		}
-		return userDao.findOneByNome(auth.getName());		
+		return userDao.findOneByName(auth.getName());
 	}
 
 }
