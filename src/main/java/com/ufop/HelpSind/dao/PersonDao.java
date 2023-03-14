@@ -11,5 +11,10 @@ import com.ufop.HelpSind.domain.Person;
 public interface PersonDao extends PagingAndSortingRepository<Person, Long>, CrudRepository<Person, Long>{
 	
 	Page<Person> findAllByCondominiumOrderByName(Condominium condominium, Pageable page);
+	
+	Boolean existsByCpfAndCondominium(String cpf, Condominium condominium);
+
+	Boolean existsByCpfAndCondominiumAndIdPersonNot(String cpf, Condominium condominium, Long idPessoa);
+ 
 
 }

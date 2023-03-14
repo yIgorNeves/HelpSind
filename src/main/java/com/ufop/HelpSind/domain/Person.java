@@ -2,6 +2,8 @@ package com.ufop.HelpSind.domain;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.ufop.HelpSind.enums.State;
 
 import jakarta.persistence.Column;
@@ -39,6 +41,11 @@ public class Person implements Serializable, Comparable<Person>{
 	@Email
 	@Size(max = 100)
 	private String email;
+	
+	@CPF
+	@NotBlank
+	@Size(min=11, max=11)
+	private String cpf;
 
 	@Size(max = 15)
 	private String phone;
@@ -175,6 +182,14 @@ public class Person implements Serializable, Comparable<Person>{
 
 	public void setCondominium(Condominium condominium) {
 		this.condominium = condominium;
+	}
+	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	@Override

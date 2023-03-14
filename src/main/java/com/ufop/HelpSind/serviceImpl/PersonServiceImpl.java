@@ -1,7 +1,9 @@
 package com.ufop.HelpSind.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import com.ufop.HelpSind.dao.PersonDao;
+import com.ufop.HelpSind.domain.Apartment;
 import com.ufop.HelpSind.domain.Condominium;
 import com.ufop.HelpSind.domain.Person;
 import com.ufop.HelpSind.service.PersonService;
@@ -71,9 +74,19 @@ public class PersonServiceImpl implements PersonService{
 	}
 
 	@Override
-	public void validate(Person entity, BindingResult validation) {
-		// TODO Auto-generated method stub
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	public void validate(Person person, BindingResult validation) {
 		
+		if(person.getIdPerson() == null) {
+			if (person.getCpf() != null && personDao.existsByCpfAndCondominium(person.getCpf(), userService.logged().getCondominium())) {
+				validation.rejectValue("cpf", "Unique");
+			}
+		} else {
+			if (person.getCpf() != null && personDao.existsByCpfAndCondominiumAndIdPersonNot(person.getCpf(), userService.logged().getCondominium(), person.getIdPerson())) {
+				validation.rejectValue("cpf", "Unique");
+			}
+		}
 	}
+	
 
 }

@@ -1,7 +1,7 @@
 
 CREATE TABLE if not exists  condominium (
-                                            idCondominium BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                            corporateName VARCHAR(100) NULL,
+    idCondominium BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    corporateName VARCHAR(100) NULL,
     cnpj VARCHAR(14) NULL,
     email VARCHAR(100) NULL,
     phone VARCHAR(10) NULL,
@@ -16,8 +16,8 @@ CREATE TABLE if not exists  condominium (
     PRIMARY KEY(idCondominium)
     );
 CREATE TABLE if not exists  users (
-                                      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                      password VARCHAR(100) NULL,
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    password VARCHAR(100) NULL,
     active BOOL NULL,
     name VARCHAR(50) NULL,
     username VARCHAR(50) NULL,
@@ -35,8 +35,8 @@ CREATE TABLE if not exists  users (
 
 
 CREATE TABLE if not exists  auths (
-                                      id_user BIGINT UNSIGNED NOT NULL,
-                                      auth VARCHAR(50) NOT NULL,
+    id_user BIGINT UNSIGNED NOT NULL,
+    auth VARCHAR(50) NOT NULL,
     PRIMARY KEY(id_user, auth),
     FOREIGN KEY(id_user)
     REFERENCES users(id)
@@ -45,9 +45,10 @@ CREATE TABLE if not exists  auths (
     );
 
 CREATE TABLE if not exists  person (
-                                       idPerson BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                       name VARCHAR(50) NULL,
+    idPerson BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NULL,
     email VARCHAR(100) NULL,
+    cpf cpf VARCHAR(11) UNIQUE NULL,
     phone VARCHAR(15) NULL,
     cellphone VARCHAR(15) NULL,
     address VARCHAR(100) NULL,
@@ -67,8 +68,8 @@ CREATE TABLE if not exists  person (
     );
 
 CREATE TABLE if not exists  apartments (
-                                           idApartment BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                           number VARCHAR(10) NULL,
+    idApartment BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    number VARCHAR(10) NULL,
     idCondominium BIGINT UNSIGNED NOT NULL,
     idPerson BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY(idApartment),
@@ -83,11 +84,11 @@ CREATE TABLE if not exists  apartments (
     );
 
 CREATE TABLE if not exists expenses (
-                                        idExpense BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                        idApartment BIGINT UNSIGNED NOT NULL,
-                                        issuanceDate DATE NULL,
-                                        expirationDate DATE NULL,
-                                        value DECIMAL(9,2) NULL,
+	idExpense BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	idApartment BIGINT UNSIGNED NOT NULL,
+	issuanceDate DATE NULL,
+	expirationDate DATE NULL,
+	value DECIMAL(9,2) NULL,
     name VARCHAR(255) NULL,
     situation CHAR NULL,
     receivingDate DATE NULL,
@@ -104,9 +105,9 @@ CREATE TABLE if not exists expenses (
     );
 
 CREATE TABLE if not exists financialMovement (
-                                                 idMovement BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                                                 date DATE NULL,
-                                                 value DECIMAL(9,2) NULL,
+	 idMovement BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	 date DATE NULL,
+	 value DECIMAL(9,2) NULL,
     source VARCHAR(20) NULL,
     description VARCHAR(255) NULL,
     PRIMARY KEY(idMovement)
