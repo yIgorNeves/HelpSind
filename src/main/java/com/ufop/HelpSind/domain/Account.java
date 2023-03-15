@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "counts")
+@Table(name = "account")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Account implements Serializable, Comparable<Account>{
 	
@@ -38,7 +38,7 @@ public class Account implements Serializable, Comparable<Account>{
 	@Column(name = "initialbalance")
 	private BigDecimal initialBalance;
 	
-	@Column(name = "currentBalance")
+	@Column(name = "currentbalance")
 	private BigDecimal currentBalance;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

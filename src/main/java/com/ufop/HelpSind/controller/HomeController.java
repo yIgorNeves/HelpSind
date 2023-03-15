@@ -34,7 +34,6 @@ public class HomeController {
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 		
 		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("TRUSTEE"))) {
-			System.out.println("alou");
 			retorno = "redirect:/trustee";
 		} else if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("TENANT"))) {
 			retorno = "redirect:/tenant";
