@@ -2,7 +2,7 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
 
-<title>Condomínio</title>
+<title>Cadastrar Condomínio</title>
 
 </head>
 <body>
@@ -59,8 +59,8 @@
 							</p>
 							<div class="form-row">
 								<div class="form-group col-md-10">
-									<label>Rua</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{street}" placeholder="Rua" />
-									<div class="invalid-feedback" th:errors="*{street}"></div>
+									<label>Rua</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{address}" placeholder="Rua" />
+									<div class="invalid-feedback" th:errors="*{address}"></div>
 								</div>
 								<div class="form-group col-md-2">
 									<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{addressNumber}" placeholder="O nº" />
@@ -88,9 +88,9 @@
 									<div class="invalid-feedback" th:errors="*{city}"></div>
 								</div>
 								<div class="form-group col-md-4">
-									<label>Estado</label> <select class="custom-select" id="estado" th:errorclass="is-invalid" th:field="*{state}">
+									<label>Estado</label> <select class="custom-select" id="state" th:errorclass="is-invalid" th:field="*{state}">
 										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
-										<option th:each="state : ${state}" th:value="${state}" th:text="${state.name}"></option>
+										<option th:each="state : ${states}" th:value="${state}" th:text="${state.name}"></option>
 									</select>
 									<div class="invalid-feedback" th:errors="*{state}"></div>
 								</div>
@@ -100,7 +100,7 @@
 				</div>
 			</fieldset>
 			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
-			<a class="btn btn-secondary" th:href="@{/trustee}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+			<a class="btn btn-secondary" th:href="@{/home}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
 		</form>
 		</main>
 	</th:block>

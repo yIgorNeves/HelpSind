@@ -55,8 +55,8 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	private String cellphone;
 	
 	@Size(max = 30)
-	@Column(name = "street")
-	private String street;
+	@Column(name = "address")
+	private String address;
 	
 	@NotBlank
 	@Size(min = 1, max = 6)
@@ -198,12 +198,12 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 		this.accounts = accounts;
 	}
 	
-	public String getStreet() {
-		return street;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public User getTrustee() {

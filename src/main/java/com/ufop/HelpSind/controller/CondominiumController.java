@@ -1,10 +1,14 @@
 package com.ufop.HelpSind.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,14 +33,27 @@ public class CondominiumController {
 	}
 	
 	@GetMapping("/cadastro")
-	public ModelAndView getCondominiumCadastro(ModelMap model) {
+	public ModelAndView getCondominiumRegister(ModelMap model) {
 		Condominium condominium = condominiumService.read();
 		if (condominium != null) {
 			model.addAttribute("codominium", condominium);
 		} else {
 			model.addAttribute("condominium", new Condominium());
 		}
-		model.addAttribute("content", "contentCadastro");
-		return new ModelAndView("layout/layoutTrustee", model);
+		model.addAttribute("content", "condominiumRegister");
+		return new ModelAndView("layouts/trustee", model);
 	}
+	
+	@PostMapping("/cadastro")
+	public ModelAndView CondominiumRegister(@Valid @ModelAttribute("condominium") Condominium condominium, BindingResult validation) {
+		condominiumService.validate(condominium, validation);
+		if (validation.hasErrors()) {
+			condominium.setIdCondominium(null);
+			return new ModelAndView("layouts/trustee", "content", "condominiumRegister");
+		}	
+		condominiumService.save(condominium);
+		return new ModelAndView("redirect:/home");
+	}
+	
+	
 }
