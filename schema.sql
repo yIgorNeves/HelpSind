@@ -111,3 +111,17 @@ CREATE TABLE if not exists financialMovement (
     description VARCHAR(255) NULL,
     PRIMARY KEY(idMovement)
     );
+   
+CREATE TABLE if not exists account (
+	idAccount BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	type VARCHAR(1) NULL,
+    description VARCHAR(255) NULL,
+	initialBalance DECIMAL(9,2) NULL,
+    currentBalance DECIMAL(9,2) NULL,
+    idCondominium BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY(idAccount),
+    FOREIGN KEY(idCondominium)
+    REFERENCES condominium(idCondominium)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+    );
