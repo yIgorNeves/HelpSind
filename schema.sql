@@ -1,4 +1,3 @@
-
 CREATE TABLE if not exists  condominium (
     idCondominium BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     corporateName VARCHAR(100) NULL,
@@ -15,6 +14,7 @@ CREATE TABLE if not exists  condominium (
     cep VARCHAR(8) NULL,
     PRIMARY KEY(idCondominium)
     );
+    
 CREATE TABLE if not exists  users (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     password VARCHAR(100) NULL,
@@ -33,7 +33,6 @@ CREATE TABLE if not exists  users (
     ON UPDATE CASCADE
     );
 
-
 CREATE TABLE if not exists  auths (
     id_user BIGINT UNSIGNED NOT NULL,
     auth VARCHAR(50) NOT NULL,
@@ -48,7 +47,7 @@ CREATE TABLE if not exists  person (
     idPerson BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NULL,
     email VARCHAR(100) NULL,
-    cpf cpf VARCHAR(11) UNIQUE NULL,
+    cpf VARCHAR(11) UNIQUE NULL,
     phone VARCHAR(15) NULL,
     cellphone VARCHAR(15) NULL,
     address VARCHAR(100) NULL,
