@@ -24,7 +24,7 @@ import com.ufop.HelpSind.enums.Gender;
 import com.ufop.HelpSind.enums.State;
 import com.ufop.HelpSind.service.PersonService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping({"trustee/person", "trustee/condos"})/*condos = condominios em ingles*/

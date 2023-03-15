@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ufop.HelpSind.domain.User;
 import com.ufop.HelpSind.service.UserService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("account")

@@ -23,9 +23,9 @@ public class HomeController {
 		return new ModelAndView("layouts/layoutSite", "content", "home");
 	}
 	
-	@GetMapping({ "/entrar", "/login" })
+	@GetMapping( "/login" )
 	public ModelAndView preLogin() {
-		return new ModelAndView("layouts/layoutSite", "content", "login");
+		return new ModelAndView("layouts/loginPage", "content", "login");
 	}
 	
 	@PostMapping("/auth")

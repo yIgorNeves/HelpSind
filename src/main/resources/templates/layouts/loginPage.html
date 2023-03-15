@@ -19,7 +19,6 @@
 <title th:replace="~{'site/' + ${content} :: title}"></title>
 </head>
 <body id="site">
-	<th:block th:replace="~{layouts/header :: header}" />
 	<div style="display:flex; justify-content: center; align-items: center; height: 90vh;">
 		<th:block th:replace="~{'site/' + ${content} :: content}" />
 	</div>

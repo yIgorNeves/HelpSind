@@ -2,13 +2,19 @@ package com.ufop.HelpSind;
 
 import javax.sql.DataSource;
 
+import com.ufop.HelpSind.serviceImpl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,68 +23,49 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 
+@Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfiguration{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	DataSource dataSource;
-	
-	@Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests()
-        		.requestMatchers("/trustee/**").hasAuthority("TRUSTEE")
-        		.requestMatchers("/tenant/**").hasAuthority("TENANT")
-        		.requestMatchers("/admin/**").hasAuthority("ADMIN")
-        		.requestMatchers("/auth/**", "/account/cadastro/**").authenticated()
-    		.and().formLogin()
-        			.loginPage("/entrar")
-        			.failureUrl("/entrar?erro")
-        			.successForwardUrl("/auth")
-        			.defaultSuccessUrl("/auth")
-        			.usernameParameter("cpf").passwordParameter("password")
-    		.and().logout()
-        			.logoutSuccessUrl("/entrar?sair")
-        			.logoutUrl("/sair")
-        			.invalidateHttpSession(true)
-        			.clearAuthentication(true)
-    		.and().rememberMe()
-        			.tokenRepository(persistentTokenRepository())
-        			.tokenValiditySeconds(120960)
-    		.and().csrf();
-        return http.build();
-	}
-	
-	@Bean
-	public AuthenticationManager authManager(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource)
-			.usersByUsernameQuery("select cpf,password,active from users where cpf=?")
-			.authoritiesByUsernameQuery(
-					"select cpf,auth from users join auth on id = id_user where cpf=?");
-		 auth
-         .inMemoryAuthentication()
-             .withUser("user").password("123456").roles("USER");
 
-		return auth.build();
+	@Autowired
+	private UserDetailsServiceImpl userDetailsService;
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
+		http.authorizeRequests()
+			.antMatchers("/images/**").permitAll()
+			.antMatchers("/css/**").permitAll()
+			.antMatchers("/js/**").permitAll()
+			.antMatchers("/fonts/**").permitAll()
+			.antMatchers("/vendors/**").permitAll()
+			.anyRequest().authenticated();
+		http.formLogin()
+			.loginPage("/login")
+			.loginProcessingUrl("/auth")
+			.defaultSuccessUrl("/home")
+			.permitAll()
+			.and()
+			.logout()
+			.logoutUrl("/sair")
+			.logoutSuccessUrl("/login")
+			.deleteCookies("JSESSIONID");
+
+
 	}
-	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder());
+	}
+
 	@Bean
-	public PersistentTokenRepository persistentTokenRepository() {
-		JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
-		db.setDataSource(dataSource);
-		return db;
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder(12);
 	}
-	
-	@Bean
-	public SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler() {
-		SavedRequestAwareAuthenticationSuccessHandler auth = new SavedRequestAwareAuthenticationSuccessHandler();
-		auth.setTargetUrlParameter("targetUrl");
-		return auth;
-	}
-	
-	@Bean
-	UserDetailsManager users(DataSource dataSource) {
-		JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-	
-		return users;
-	}
+
 }
