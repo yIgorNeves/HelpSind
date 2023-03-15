@@ -20,8 +20,12 @@
 </head>
 <body id="site">
 	<th:block th:replace="~{layouts/header :: header}" />
-	<th:block th:replace="~{'site/' + ${content} :: content}" />
-	<th:block th:replace="~{layouts/footer :: footer}" />
+	<div style="display:flex; justify-content: center; align-items: center; height: 90vh;">
+		<th:block th:replace="~{'site/' + ${content} :: content}" />
+	</div>
+	<div style=" position: absolute; bottom: 0; width: 100%">
+		<th:block th:replace="~{layouts/footer :: footer}" />
+	</div>
 
 	<!-- JavaScript -->
 	<script th:src="@{/js/jquery.min.js}"></script>

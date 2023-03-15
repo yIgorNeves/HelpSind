@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 	<head>
 		<title>HelpSind</title>
 	</head>
@@ -8,7 +8,7 @@
 		<th:block th:fragment="content">
 		<main role="main" class="container">
 			<div class="jumbotron mb-0 m-auto">
-				<h1 class="display-4">Bem vindo! </h1>
+				<h1 class="display-4">Bem vindo(a), <span sec:authentication="name"></span>!</h1>
 				<p>Facilite a vida de todo seu condominio de uma forma simples.</p>
 				<hr class="my-4">
 				<p>Faça seu cadastro abaixo</p>

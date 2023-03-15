@@ -10,7 +10,7 @@
 					<button class="navbar-toggler" type="button" data-toggle="collapse" id="navbarToggler" data-target="#navbarCollapse">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<div class="collapse navbar-collapse" id="navbarCollapse">
+					<div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content: space-between">
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item"><a th:classappend="${ativo[0] == 'inicio'}? 'active'" class="nav-link" th:href="@{/}">Início</a></li>
 							<li class="nav-item"><a th:classappend="${ativo[0] == 'account'}? 'active'" class="nav-link" th:href="@{/account/cadastrar}">Registrar</a></li>
