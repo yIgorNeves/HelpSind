@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "apartment")
+@Table(name = "apartments")
 public class Apartment implements Serializable, Comparable<Apartment> {
 	
 	@Id
