@@ -87,7 +87,7 @@ public class PersonController {
 			return new ModelAndView("layouts/trustee", model);
 		}
 		personService.save(person);
-		return new ModelAndView("redirect:/trustee/condos");
+		return new ModelAndView("redirect:/home");
 	}
 	
 	@PutMapping(value = "/cadastro")

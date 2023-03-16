@@ -20,6 +20,7 @@ import com.ufop.HelpSind.service.CondominiumService;
 @Controller
 @RequestMapping({"trustee/condominium"})
 public class CondominiumController {
+	
 	@Autowired
 	private CondominiumService condominiumService;
 	
