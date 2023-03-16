@@ -22,6 +22,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import com.ufop.HelpSind.enums.State;
@@ -86,13 +87,22 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OrderBy(value = "type")
 	private List<Account> accounts = new ArrayList<>();
-	
+
+	@JsonIgnore
 	@OneToOne(mappedBy = "condominium", fetch = FetchType.LAZY)
 	private User trustee;
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OrderBy(value = "name")
 	private List<Person> people = new ArrayList<>();
+
+	public Condominium() {
+	}
+
+	public Condominium(Long idCondominium) {
+		this.idCondominium = idCondominium;
+	}
 
 	public Long getIdCondominium() {
 		return idCondominium;

@@ -31,3 +31,14 @@ html, body {
 .ml10{
     margin-left: 10px;
 }
+
+.option-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.option{
+    width: 200px !important;
+    padding: 10%;
+    line-height: 5vh;
+}

@@ -2,6 +2,10 @@
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
 	<head>
 		<title>HelpSind</title>
+		
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/regular.min.css" rel="stylesheet" type="text/css"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
 	</head>
 	
 	<body>
@@ -11,8 +15,16 @@
 				<h1 class="display-4">Bem vindo(a), <span sec:authentication="name"></span>!</h1>
 				<p>Facilite a vida de todo seu condominio de uma forma simples.</p>
 				<hr class="my-4">
-				<p>Faça seu cadastro abaixo</p>
-				<a class="btn btn-primary btn-lg" th:href="@{trustee/condominium/cadastro}" role="button"> Registrar</a> <a class="ml-3" th:href="@{/entrar}">Já possuo uma conta.</a>
+				
+				<div class="option-group">
+					<a class="btn btn-primary btn-lg option" th:href="@{trustee/condominium/cadastro}" role="button">
+						<i class="far fa-building fa-lg fa-fw"></i><p>Novo Condominio</p></a>
+					<a class="btn btn-primary btn-lg option" th:href="@{trustee/person/cadastro}" role="button">
+						<i class="fas fa-person fa-lg fa-fw "></i> <p>Nova Pessoa</p></a>
+					<a class="btn btn-primary btn-lg option" th:href="@{trustee/apartament/cadastro}" role="button">
+						<i class="fas fa-key fa-lg fa-fw "></i> <p> Novo Apartamento</p> </a>
+				</div>
+	
 			</div>
 			
 		</main>
