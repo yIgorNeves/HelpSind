@@ -23,8 +23,8 @@
 	<th:block th:replace="layouts/header :: header"/>
 	
 	<div class="content">
-		<div class="container">
-			<th:block th:replace="layouts/sideBar :: sideBar"/>
+		<div class="container child">
+<!--			<th:block th:replace="layouts/sideBar :: sideBar"/>-->
 			<th:block th:replace="'content/' + ${content} :: content"/>
 		</div>
 	</div>

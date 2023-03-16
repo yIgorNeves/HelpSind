@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/css/**").permitAll()
 			.antMatchers("/js/**").permitAll()
 			.antMatchers("/fonts/**").permitAll()
+			.antMatchers("/webfonts/**").permitAll()
 			.antMatchers("/vendors/**").permitAll()
 			.antMatchers("/account/cadastrar").permitAll()
 			.anyRequest().authenticated();

@@ -3,21 +3,24 @@ html, body {
     height: 100vh;
 }
 
+p{
+    font-size: 17px !important;
+}
+
 .content {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 90%;
     width: 100%;
     overflow-y: auto !important;
 }
 
 .child{
-    width: inherit;
-    padding-top: 10%;
+    height: 80%;
 }
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%
 }
@@ -39,6 +42,4 @@ html, body {
 }
 .option{
     width: 200px !important;
-    padding: 10%;
-    line-height: 5vh;
 }
