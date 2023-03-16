@@ -8,11 +8,11 @@
 		<th:block th:fragment="content">
 		<main role="main" class="container">
 			<div class="jumbotron mb-0 m-auto">
-				<h1 class="display-4">Bem vindo, <span sec:authentication="name"></span>!</h1>
+				<h1 class="display-4">Bem vindo(a), <span sec:authentication="name"></span>!</h1>
 				<p>Facilite a vida de todo seu condominio de uma forma simples.</p>
 				<hr class="my-4">
 				<p>Faça seu cadastro abaixo</p>
-				<a class="btn btn-primary btn-lg" th:href="@{/account/cadastrar}" role="button"> Registrar</a> <a class="ml-3" th:href="@{/entrar}">Já possuo uma conta.</a>
+				<a class="btn btn-primary btn-lg" th:href="@{trustee/condominium/cadastro}" role="button"> Registrar</a> <a class="ml-3" th:href="@{/entrar}">Já possuo uma conta.</a>
 			</div>
 			
 		</main>

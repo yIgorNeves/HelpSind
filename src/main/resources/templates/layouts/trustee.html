@@ -5,34 +5,40 @@
 
 <!-- Meta tags -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
 <!-- Web App -->
-<meta name="application-name" content="HelpSind" />
-<meta name="theme-color" content="#007bff">
+	<meta name="application-name" content="HelpSind"/>
+	<meta name="theme-color" content="#007bff">
 
 <!-- CSS -->
-<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
-<link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}" />
-<link rel="stylesheet" th:href="@{/css/scroll.min.css}" />
-<link rel="stylesheet" th:href="@{/css/meu.css}" />
-
-<title th:replace="'content/' + ${content} :: title"></title>
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/scroll.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+	
+	<title th:replace="'content/' + ${content} :: title"></title>
 </head>
 <body id="sindico">
-	<th:block th:replace="layouts/header :: header" />
-	<div class="d-flex">
-		<th:block th:replace="layouts/sideBar :: sideBar" />
-		<th:block th:replace="'content/' + ${content} :: content" />
+	<th:block th:replace="layouts/header :: header"/>
+	
+	<div class="content">
+		<div class="container">
+			<th:block th:replace="layouts/sideBar :: sideBar"/>
+			<th:block th:replace="'content/' + ${content} :: content"/>
+		</div>
 	</div>
-	<th:block th:replace="layouts/footer :: footer" />
-
+	<div class="footer">
+		<th:block th:replace="~{layouts/footer :: footer}"/>
+	</div>
+	
 	<!-- JavaScript -->
 	<script th:src="@{/js/jquery.min.js}"></script>
 	<script th:src="@{/js/popper.min.js}"></script>
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script th:src="@{/js/scroll.min.js}"></script>
 	<script th:src="@{/js/meu.js}"></script>
-	<th:block th:replace="'content/' + ${content} :: jsAdicional" />
+	
+	<th:block th:replace="'content/' + ${content} :: jsAdicional"/>
 </body>
 </html>

@@ -59,13 +59,13 @@ public class PersonController {
 		model.addAttribute("pessoas",
 				personService.listPage(PageRequest.of(pagina.orElse(1) - 1, size.orElse(20))));
 		model.addAttribute("conteudo", "pessoaLista");
-		return new ModelAndView("layoputs/trustee", model);
+		return new ModelAndView("layouts/trustee", model);
 	}
 	
 	@GetMapping("/cadastro")
 	public ModelAndView getPersonCadastro(@ModelAttribute("person") Person person, ModelMap model) {
 		model.addAttribute("content", "personRegister");
-		return new ModelAndView("layoputs/trustee", model);
+		return new ModelAndView("layouts/trustee", model);
 	}
 	
 	@GetMapping("/{idPeson}/cadastro")
@@ -74,7 +74,7 @@ public class PersonController {
 		
 		model.addAttribute("pessoa", person);		
 		model.addAttribute("content", "personRegister");
-		return new ModelAndView("layoputs/trustee", model);
+		return new ModelAndView("layouts/trustee", model);
 	}
 	
 	@PostMapping(value = "/cadastro")
@@ -84,7 +84,7 @@ public class PersonController {
 		if (validation.hasErrors()) {
 			person.setIdPerson(null);
 			model.addAttribute("content", "personRegister");
-			return new ModelAndView("layoputs/trustee", model);
+			return new ModelAndView("layouts/trustee", model);
 		}
 		personService.save(person);
 		return new ModelAndView("redirect:/trustee/condos");
@@ -96,7 +96,7 @@ public class PersonController {
 		personService.validate(person, validation);
 		if (validation.hasErrors()) {
 			model.addAttribute("content", "personRegister");
-			return new ModelAndView("layoputs/trustee", model);
+			return new ModelAndView("layouts/trustee", model);
 		}
 		personService.update(person);
 		return new ModelAndView("redirect:/trustee/condos");

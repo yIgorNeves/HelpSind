@@ -50,12 +50,12 @@ public class ApartmentController {
 		model.addAttribute("apartments",
 				apartmentService.listPage(PageRequest.of(page.orElse(1) - 1, size.orElse(20))));
 		model.addAttribute("content", "apartmentList");
-		return new ModelAndView("layout/layoutTrustee", model);
+		return new ModelAndView("layout/trustee", model);
 	}
 	
 	@GetMapping("/cadastro")
 	public ModelAndView getMoradiaCadastro(@ModelAttribute("apartments") Apartment apartment) {
-		return new ModelAndView("layout/layoutTrustee", "content", "apartmentRegister");
+		return new ModelAndView("layout/trustee", "content", "apartmentRegister");
 	}
 	
 	@PostMapping("/cadastro")
@@ -64,7 +64,7 @@ public class ApartmentController {
 		apartmentService.validate(apartment, validation);
 		if (validation.hasErrors()) {
 			apartment.setIdApartment(null);
-			return new ModelAndView("layout/layoutTrustee", "content", "apartmentRegister");
+			return new ModelAndView("layout/trustee", "content", "apartmentRegister");
 		}
 		apartmentService.save(apartment);
 		return new ModelAndView("redirect:/trustee/apartments");
@@ -76,7 +76,7 @@ public class ApartmentController {
 		apartmentService.validate(apartments, validation);
 		if (validation.hasErrors()) {
 			model.addAttribute("content", "apartmentRegister");
-			return new ModelAndView("layout/layoutTrustee", model);
+			return new ModelAndView("layout/trustee", model);
 		}
 		apartmentService.update(apartments);
 		return new ModelAndView("redirect:/trustee/apartments");
