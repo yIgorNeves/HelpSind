@@ -37,7 +37,7 @@ public class CondominiumController {
 	public ModelAndView getCondominiumRegister(ModelMap model) {
 		Condominium condominium = condominiumService.read();
 		if (condominium != null) {
-			model.addAttribute("codominium", condominium);
+			model.addAttribute("condominium", condominium);
 		} else {
 			model.addAttribute("condominium", new Condominium());
 		}
