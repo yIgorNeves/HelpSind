@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,6 +53,16 @@ public class CondominiumController {
 			return new ModelAndView("layouts/trustee", "content", "condominiumRegister");
 		}	
 		condominiumService.save(condominium);
+		return new ModelAndView("redirect:/home");
+	}
+	
+	@PutMapping("/cadastro")
+	public ModelAndView putCondominioCadastro(@Valid @ModelAttribute("condominium") Condominium condominium, BindingResult validacao) {
+		condominiumService.validate(condominium, validacao);
+		if (validacao.hasErrors()) {
+			return new ModelAndView("layouts/trustee", "content", "condominiumRegister");
+		}
+		condominiumService.update(condominium);
 		return new ModelAndView("redirect:/home");
 	}
 	
