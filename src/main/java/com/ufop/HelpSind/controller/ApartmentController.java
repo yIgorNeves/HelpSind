@@ -23,16 +23,20 @@ import com.ufop.HelpSind.domain.Apartment;
 import com.ufop.HelpSind.domain.Person;
 import com.ufop.HelpSind.service.ApartmentService;
 import com.ufop.HelpSind.service.PersonService;
+import com.ufop.HelpSind.service.UserService;
 
 @Controller
 @RequestMapping("trustee/apartments")
 public class ApartmentController {
 	
-	//@Autowired
+	@Autowired
 	private ApartmentService apartmentService;
 	
 	@Autowired
 	private PersonService personService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@ModelAttribute("ativo")
 	public String[] ativo() {
@@ -55,19 +59,19 @@ public class ApartmentController {
 	
 	@GetMapping("/cadastro")
 	public ModelAndView getMoradiaCadastro(@ModelAttribute("apartments") Apartment apartment) {
-		return new ModelAndView("layout/trustee", "content", "apartmentRegister");
+		return new ModelAndView("layouts/trustee", "content", "apartmentRegister");
 	}
 	
 	@PostMapping("/cadastro")
-	public ModelAndView postMoradiaCadastro(@Valid @ModelAttribute("apartments") Apartment apartment,
-			BindingResult validation) {
+	public ModelAndView postMoradiaCadastro(@Valid @ModelAttribute("apartments") Apartment apartment, BindingResult validation) {
+		apartment.setCondominium(userService.logged().getCondominium());
 		apartmentService.validate(apartment, validation);
 		if (validation.hasErrors()) {
 			apartment.setIdApartment(null);
-			return new ModelAndView("layout/trustee", "content", "apartmentRegister");
+			return new ModelAndView("layouts/trustee", "content", "apartmentRegister");
 		}
 		apartmentService.save(apartment);
-		return new ModelAndView("redirect:/trustee/apartments");
+		return new ModelAndView("redirect:/home");
 	}
 	
 	@PutMapping("/cadastro")

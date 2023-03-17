@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de um novo apartamento</title>
+</head>
+
+<body>
+	<th:block th:fragment="content">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro de apartamentos</h3>
+		<form th:action="@{/trustee/apartments/cadastro}" th:object="${apartments}" th:method="${apartments.idApartment == null} ? post : put" novalidate>
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{idApartment}" />
+				<div class="card">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+						
+							<p class="text-primary">
+								<i class="fas fa-building"></i> Informações principais
+							</p>
+
+							<div class="form-group">
+								<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{number}" placeholder="Número do seu apartamento" autofocus />
+								<div class="invalid-feedback" th:errors="*{number}"></div>
+							</div>
+							
+							<div class="form-group col-md-5">
+								<label for="person">Morador</label> 
+								<select class="form-control" id="person" th:errorclass="is-invalid" th:field="*{person}">
+									<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+									<option th:each="person : ${people}" th:value="${person.idPerson}" th:text="${person.name}"></option>
+								</select>
+								<div class="invalid-feedback" th:errors="*{person}"></div>
+							</div>
+							
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/home}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+
+</body>
+</html>
