@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,16 +55,23 @@ public class ApartmentController {
 		model.addAttribute("apartments",
 				apartmentService.listPage(PageRequest.of(page.orElse(1) - 1, size.orElse(20))));
 		model.addAttribute("content", "apartmentList");
-		return new ModelAndView("layout/trustee", model);
+		return new ModelAndView("layouts/trustee", model);
 	}
 	
 	@GetMapping("/cadastro")
-	public ModelAndView getMoradiaCadastro(@ModelAttribute("apartments") Apartment apartment) {
+	public ModelAndView getApartmentsRegister(@ModelAttribute("apartments") Apartment apartment) {
 		return new ModelAndView("layouts/trustee", "content", "apartmentRegister");
 	}
 	
+	@GetMapping("/{idApartment}/cadastro")
+	public ModelAndView getApartmentsUpdate(@PathVariable("idApartment") Long idApartment, ModelMap model) {
+		model.addAttribute("apartments", apartmentService.read(idApartment));
+		model.addAttribute("content", "apartmentRegister");
+		return new ModelAndView("layouts/trustee", model);
+	}
+	
 	@PostMapping("/cadastro")
-	public ModelAndView postMoradiaCadastro(@Valid @ModelAttribute("apartments") Apartment apartment, BindingResult validation) {
+	public ModelAndView postApartmentsRegister(@Valid @ModelAttribute("apartments") Apartment apartment, BindingResult validation) {
 		apartment.setCondominium(userService.logged().getCondominium());
 		apartmentService.validate(apartment, validation);
 		if (validation.hasErrors()) {
@@ -71,11 +79,11 @@ public class ApartmentController {
 			return new ModelAndView("layouts/trustee", "content", "apartmentRegister");
 		}
 		apartmentService.save(apartment);
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/trustee/apartments");
 	}
 	
 	@PutMapping("/cadastro")
-	public ModelAndView putMoradiaCadastro(@Valid @ModelAttribute("apartments") Apartment apartments, BindingResult validation,
+	public ModelAndView putApartmentsRegister(@Valid @ModelAttribute("apartments") Apartment apartments, BindingResult validation,
 			ModelMap model) {
 		apartmentService.validate(apartments, validation);
 		if (validation.hasErrors()) {
@@ -87,7 +95,7 @@ public class ApartmentController {
 	}
 	
 	@DeleteMapping("/excluir")
-	public ModelAndView deleteMoradiaCadastro(@RequestParam("idObj") Long idObj) {
+	public ModelAndView deleteApartmentsRegister(@RequestParam("idObj") Long idObj) {
 		apartmentService.delete(apartmentService.read(idObj));
 		return new ModelAndView("redirect:/trustee/apartments");
 	}
