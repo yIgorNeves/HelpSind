@@ -104,9 +104,9 @@ CREATE TABLE if not exists expenses (
     );
 
 CREATE TABLE if not exists financialMovement (
-	 idMovement BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	 date DATE NULL,
-	 value DECIMAL(9,2) NULL,
+	idMovement BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	date DATE NULL,
+	value DECIMAL(9,2) NULL,
     source VARCHAR(20) NULL,
     description VARCHAR(255) NULL,
     PRIMARY KEY(idMovement)
