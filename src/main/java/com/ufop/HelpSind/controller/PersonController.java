@@ -27,7 +27,7 @@ import com.ufop.HelpSind.service.PersonService;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping({"trustee/person", "trustee/condos"})/*condos = condominios em ingles*/
+@RequestMapping("trustee/person")
 public class PersonController {
 
 	@Autowired
@@ -53,12 +53,12 @@ public class PersonController {
 		return State.values();
 	}
 	
-	@GetMapping({ "", "/", "/list" })
+	@GetMapping({ "", "/", "/lista"})
 	public ModelAndView getPeople(@RequestParam("pagina") Optional<Integer> pagina,
-			@RequestParam("tamanho") Optional<Integer> size, ModelMap model) {
-		model.addAttribute("pessoas",
+			@RequestParam("size") Optional<Integer> size, ModelMap model) {
+		model.addAttribute("person",
 				personService.listPage(PageRequest.of(pagina.orElse(1) - 1, size.orElse(20))));
-		model.addAttribute("conteudo", "pessoaLista");
+		model.addAttribute("content", "personList");
 		return new ModelAndView("layouts/trustee", model);
 	}
 	
@@ -68,11 +68,11 @@ public class PersonController {
 		return new ModelAndView("layouts/trustee", model);
 	}
 	
-	@GetMapping("/{idPeson}/cadastro")
+	@GetMapping("/{idPerson}/cadastro")
 	public ModelAndView getPessoaEditar(@PathVariable("idPerson") Long idPerson, ModelMap model) {
 		Person person = personService.read(idPerson);
 		
-		model.addAttribute("pessoa", person);		
+		model.addAttribute("person", person);		
 		model.addAttribute("content", "personRegister");
 		return new ModelAndView("layouts/trustee", model);
 	}
@@ -87,7 +87,7 @@ public class PersonController {
 			return new ModelAndView("layouts/trustee", model);
 		}
 		personService.save(person);
-		return new ModelAndView("redirect:/home");
+		return new ModelAndView("redirect:/trustee/person");
 	}
 	
 	@PutMapping(value = "/cadastro")
@@ -99,13 +99,13 @@ public class PersonController {
 			return new ModelAndView("layouts/trustee", model);
 		}
 		personService.update(person);
-		return new ModelAndView("redirect:/trustee/condos");
+		return new ModelAndView("redirect:/trustee/person");
 	}
 	
 	@DeleteMapping("/excluir")
 	public ModelAndView deletePessoaCadastro(@RequestParam("idObj") Long idObj) {
 		personService.delete(personService.read(idObj));
-		return new ModelAndView("redirect:/trustee/condos");
+		return new ModelAndView("redirect:/trustee/person");
 	}
 
 	

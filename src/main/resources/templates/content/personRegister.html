@@ -9,7 +9,7 @@
 <th:block th:fragment="content">
 	<main role="main">
 		<h3 class="font-weight-light">Cadastro do Pessoa</h3>
-		<form th:action="@{/trustee/person/cadastro}" th:object="${person}" th:method="${person.idPerson == null} ? post : put" novalidate>
+		<form th:action="@{/trustee/person/cadastro}" th:object="${person}" th:method="${person.idPerson == null} ? POST : PUT" novalidate>
 			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
 				<input type="hidden" th:field="*{idPerson}"/>
 				<div class="card">
@@ -62,7 +62,7 @@
 				</div>
 			</fieldset>
 			<div class="submit-group">
-				<a class="btn btn-secondary" th:href="@{/home}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+				<a class="btn btn-secondary" th:href="@{/trustee/person}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
 				<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary ml10">Salvar</button>
 			</div>
 		</form>
