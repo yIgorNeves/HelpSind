@@ -85,6 +85,7 @@ public class ApartmentController {
 	@PutMapping("/cadastro")
 	public ModelAndView putApartmentsRegister(@Valid @ModelAttribute("apartments") Apartment apartments, BindingResult validation,
 			ModelMap model) {
+		apartments.setCondominium(userService.logged().getCondominium());
 		apartmentService.validate(apartments, validation);
 		if (validation.hasErrors()) {
 			model.addAttribute("content", "apartmentRegister");

@@ -72,7 +72,7 @@ public class PersonController {
 	public ModelAndView getPessoaEditar(@PathVariable("idPerson") Long idPerson, ModelMap model) {
 		Person person = personService.read(idPerson);
 		
-		model.addAttribute("person", person);		
+		model.addAttribute("person", person);
 		model.addAttribute("content", "personRegister");
 		return new ModelAndView("layouts/trustee", model);
 	}
