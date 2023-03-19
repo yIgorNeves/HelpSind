@@ -14,7 +14,7 @@
 		<div class="table-responsive">
 			<table class="table table-hover table-sm crud-list mb-0">
 				<caption class="pb-0">
-					<span th:text="${apartments.totalElements == 0} ? 'Nenhum' : 'Há '+${apartments.totalElements}"></span> <span th:text="${apartments.totalElements>1} ? 'apartmentos cadastradas' : 'apartmento cadastrada'"></span>.
+					<span th:text="${apartments.totalElements == 0} ? 'Nenhum' : 'Há '+${apartments.totalElements}"></span> <span th:text="${apartments.totalElements>1} ? 'apartamentos cadastrados' : 'apartamento cadastrado'"></span>.
 				</caption>
 	    		<thead class="thead-light">
 	        		<tr>
@@ -24,9 +24,19 @@
 	    		</thead>
 			    <tbody>				
 			        <tr th:each="apartments : ${apartments.content}">
-			            <th scope="row" th:text="${apartments.number}" >  </th>
-			            <th scope="row" th:text="${apartments.person.name}">  </th>
-			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/apartments/{idApartment}/cadastro(idApartment=${apartments.idApartment},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/apartments/{idApartment}/cadastro(idApartment=${apartments.idApartment})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" data-target="#modalExcluir" th:data-idobj="${apartments.idApartment}" th:data-obs="${apartments}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+				        <th scope="row" th:text="${apartments.number}"></th>
+				        <th scope="row" th:text="${apartments.person.name}"></th>
+				        <td>
+					        <a class="btn btn-outline-secondary btn-sm"
+					           th:href="@{/trustee/apartments/{idApartment}/cadastro(idApartment=${apartments.idApartment},somenteLeitura)}"><i
+							        class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm"
+					                                                                th:href="@{/trustee/apartments/{idApartment}/cadastro(idApartment=${apartments.idApartment})}"><i
+						        class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm"
+					                                                                data-toggle="modal" href="#modalExcluir"
+					                                                                data-target="#modalExcluir"
+					                                                                th:data-idobj="${apartments.idApartment}"
+					                                                                th:data-obs="${apartments.number}"><i
+						        class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
 			        </tr>
 			    </tbody>
 			</table>
@@ -45,7 +55,7 @@
 					<form th:action="@{/trustee/apartments/excluir}" th:method="delete" novalidate>
 						<input type="hidden" id="idObj" name="idObj" />
 						<div class="modal-body">
-							Confirma a exclusão da moradia '<span></span>'?
+							Confirma a exclusão do apartamento '<span></span>'?
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-danger">Excluir</button>
