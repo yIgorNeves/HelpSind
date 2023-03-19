@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<title>Lista de contas</title>
+</head>
+<body>
+	<th:block th:fragment="content">
+		<main role="main">
+		<h3 class="font-weight-light">Lista de contas</h3>
+			<div class="btn-group mb-3 float-right">
+				<a class="btn btn-light" th:href="@{/trustee/account/cadastro}"><i class="fas fa-plus"></i> Nova</a>				
+			</div>
+		<div class="table-responsive">
+			<table class="table table-hover table-sm crud-list mb-0">
+				<caption class="pb-0">
+					<span th:text="${account.totalElements == 0} ? 'Nenhum' : 'Há '+${account.totalElements}"></span> <span th:text="${account.totalElements>1} ? 'apartmentos cadastradas' : 'apartmento cadastrada'"></span>.
+				</caption>
+	    		<thead class="thead-light">
+	        		<tr>
+	            		<th scope="col"> Tipo </th>
+	            		<th scope="col"> Descrição </th>
+	            		<th scope="col"> Saldo atual </th>
+	       			</tr>
+	    		</thead>
+			    <tbody>				
+			        <tr th:each="account : ${account.content}">
+			            <th scope="row" th:text="${account.type}" >  </th>
+			            <th scope="row" th:text="${account.description}">  </th>
+			            <th scope="row" th:text="|R$ ${account.currentBalance}|">  </th>
+			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" data-target="#modalExcluir" th:data-idobj="${account.idAccount}" th:data-obs="${account}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+			        </tr>
+			    </tbody>
+			</table>
+		</div>
+		</main>
+		
+		<div th:unless="${#lists.isEmpty(account)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
+			<div class="modal-dialog  modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modalExcluirLabel">Confirmar Exclusão</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/trustee/account/excluir}" th:method="delete" novalidate>
+						<input type="hidden" id="idObj" name="idObj" />
+						<div class="modal-body">
+							Confirma a exclusão da moradia '<span></span>'?
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Excluir</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

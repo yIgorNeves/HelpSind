@@ -14,8 +14,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.ufop.HelpSind.enums.BankAccountType;
 
 @SuppressWarnings("serial")
 @Entity
@@ -28,9 +30,8 @@ public class Account implements Serializable, Comparable<Account>{
 	@Column(name = "idaccount")
 	private Long idAccount;
 	
-	@Size(min = 1, max = 2)
-	@NotBlank
-	private String type;
+	@NotNull
+	private BankAccountType type;
 	
 	@Size(max = 30)
 	private String description;
@@ -53,11 +54,11 @@ public class Account implements Serializable, Comparable<Account>{
 		this.idAccount = idCount;
 	}
 
-	public String getType() {
+	public BankAccountType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(BankAccountType type) {
 		this.type = type;
 	}
 

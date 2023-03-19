@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de conta bancaria</title>
+</head>
+
+<body>
+	<th:block th:fragment="content">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro de conta bancaria</h3>
+		<form th:action="@{/trustee/account/cadastro}" th:object="${account}" th:method="${account.idAccount == null} ? post : put" novalidate>
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{idAccount}" />
+				<div class="card">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+						
+							<p class="text-primary">
+								<i class="fas fa-building"></i> Informações principais
+							</p>
+
+							<div class="form-group col-md-5">
+								<label for="state">Tipo</label>
+								<select class="form-control" id="type" name="type" th:errorclass="is-invalid" th:field="*{type}">
+									<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+									<option th:each="type : ${types}" th:value="${type}" th:text="${type.name}"></option>
+								</select>
+								<div class="invalid-feedback" th:errors="*{type}"></div>
+							</div>
+							
+							<div class="form-group col-xs-12 col-md-5">
+								<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+								                                   th:field="*{description}"
+								                                   placeholder="Numero da conta, agencia e afins." autofocus/>
+								<div class="invalid-feedback" th:errors="*{description}"></div>
+							</div>
+							
+							<div class="form-group col-xs-12 col-md-5">
+								<label>Saldo inicial</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+								                                   th:field="*{initialBalance}"
+								                                   placeholder="Saldo inicial." autofocus/>
+								<div class="invalid-feedback" th:errors="*{initialBalance}"></div>
+							</div>
+							
+							<div class="form-group col-xs-12 col-md-5">
+								<label>Saldo atual</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+								                                   th:field="*{currentBalance}"
+								                                   placeholder="Saldo atual." autofocus/>
+								<div class="invalid-feedback" th:errors="*{currentBalance}"></div>
+							</div>
+								
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/trustee/account/}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+
+</body>
+</html>

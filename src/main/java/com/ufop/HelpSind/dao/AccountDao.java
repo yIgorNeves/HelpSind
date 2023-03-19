@@ -12,15 +12,16 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.ufop.HelpSind.domain.Condominium;
+import com.ufop.HelpSind.enums.BankAccountType;
 import com.ufop.HelpSind.domain.Account;
 
 public interface AccountDao extends PagingAndSortingRepository<Account, Long>, CrudRepository<Account, Long>{
 	
 	Page<Account> findAllByCondominiumOrderByTypeAsc(Condominium condominium, Pageable page);
 		
-	Boolean existsByTypeAndCondominium(String type, Condominium condominium);
+	Boolean existsByTypeAndCondominium(BankAccountType type, Condominium condominium);
 	
-	Boolean existsByTypeAndCondominiumAndIdAccountNot(String type, Condominium condominium, Long idCount);
+	Boolean existsByTypeAndCondominiumAndIdAccountNot(BankAccountType type, Condominium condominium, Long idCount);
 	
 	@Query("select sum(currentBalance) from #{#entityName} c where c.condominium = :condominium")
 	BigDecimal sumCurrentBalanceByCondominium(@Param("condominium") Condominium condominium);
