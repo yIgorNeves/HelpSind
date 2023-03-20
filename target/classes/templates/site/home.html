@@ -10,21 +10,37 @@
 	
 	<body>
 		<th:block th:fragment="content">
-		<main role="main" class="container">
+		<main role="main" class="container-fluid">
 			<div class="jumbotron mb-0 m-auto">
 				<h1 class="display-4">Bem vindo(a), <span sec:authentication="name"></span>!</h1>
-				<p>Facilite a vida de todo seu condominio de uma forma simples.</p>
+				<p id="day"></p>
 				<hr class="my-4">
 				
-				<div class="option-group">
-					<a class="btn btn-primary btn-lg option" th:href="@{trustee/condominium/cadastro}" role="button">
-						<i class="far fa-building fa-lg fa-fw"></i><p>Novo Condominio</p></a>
-					<a class="btn btn-primary btn-lg option" th:href="@{trustee/account}" role="button">
-						<i class="far fa-building fa-lg fa-fw"></i><p> Contas </p></a>
-					<a class="btn btn-primary btn-lg option" th:href="@{trustee/person}" role="button">
-						<i class="fas fa-person fa-lg fa-fw "></i> <p> Pessoas </p></a>
-					<a class="btn btn-primary btn-lg option" th:href="@{trustee/apartments/}" role="button">
-						<i class="fas fa-key fa-lg fa-fw "></i> <p> Apartamentos</p> </a>
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 mt-1">
+						<div class="card bg-warning-subtle">
+							<div class="card-body">
+								<p class="card-title">14</p>
+								<h5 class="card-text">Contas a pagar</h5>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-4 mt-1">
+						<div class="card bg-success-subtle">
+							<div class="card-body">
+								<p class="card-title">35</p>
+								<h5 class="card-text">Contas pagas</h5>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-4 mt-1">
+						<div class="card bg-danger-subtle">
+							<div class="card-body">
+								<p class="card-title">2</p>
+								<h5 class="card-text">Contas Vencidas</h5>
+							</div>
+						</div>
+					</div>
 				</div>
 	
 			</div>

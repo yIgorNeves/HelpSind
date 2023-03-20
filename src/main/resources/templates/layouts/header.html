@@ -10,29 +10,30 @@
 					<button class="navbar-toggler" type="button" data-toggle="collapse" id="navbarToggler" data-target="#navbarCollapse">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content: space-between">
+					<div class="collapse navbar-collapse" id="navbarCollapse" style="justify-content: flex-end; margin-right: 10px">
 						<ul class="navbar-nav mr-auto">
-							<li class="nav-item"><a th:classappend="${ativo[0] == 'inicio'}? 'active'" class="nav-link" th:href="@{/}">Início</a></li>
-							
+							<li class="nav-item"></li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Administração
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+									<a class="dropdown-item" th:href="@{~/trustee/apartments/}">Apartamentos</a>
+									<a class="dropdown-item" th:href="@{~/trustee/condominium/cadastro}">Condominios</a>
+									<a class="dropdown-item" th:href="@{~/trustee/account}">Contas</a>
+									<a class="dropdown-item" th:href="@{~/trustee/person}">Pessoas</a>
+								</div>
+							</li>
 						</ul>
-						<div sec:authorize="isAnonymous()">
+						<div class="ml10" sec:authorize="isAnonymous()">
 							<form class="form-inline mt-2 mt-md-0" th:action="@{/entrar}" method="get">
 								<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Entrar</button>
 							</form>
 						</div>
-						<div sec:authorize="isAuthenticated()">
+						<div  class="ml10" sec:authorize="isAuthenticated()">
 							<form class="form-inline mt-2 mt-md-0" th:action="@{/sair}" method="post">
 								<div class="btn-group">
 									<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Sair</button>
-									<button type="button" class="btn btn-outline-light dropdown-toggle dropdown-toggle-split  my-2 my-sm-0" data-toggle="dropdown"></button>
-									<div class="dropdown-menu dropdown-menu-md-right">
-										<a sec:authorize="hasAuthority('TRUSTEE')" class="dropdown-item" th:href="@{/trustee}">Painel do Condomínio</a>
-										<a sec:authorize="hasAuthority('TENANT')" class="dropdown-item" th:href="@{/tenant}">Painel do Condômino</a>
-										<a sec:authorize="hasAuthority('ADMIN')" class="dropdown-item" th:href="@{/admin}">Painel Administrativo</a>
-										<a class="dropdown-item" th:href="@{/account/cadastro}">Meu Cadastro</a>
-										<div class="dropdown-divider"></div>
-										<button class="dropdown-item" type="submit">Sair <i class="fas fa-sign-out-alt ml-3"></i></button>
-									</div>
 								</div>
 							</form>
 						</div>
