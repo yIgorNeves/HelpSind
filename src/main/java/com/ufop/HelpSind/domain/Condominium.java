@@ -96,6 +96,10 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@OrderBy(value = "name")
 	private List<Person> people = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "condominium", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OrderBy(value = "issuanceDate desc, apartment, value")
+	private List<Expense> expense = new ArrayList<>();
 
 	public Condominium() {
 	}
@@ -230,6 +234,14 @@ public class Condominium implements Serializable, Comparable<Condominium>{
 
 	public void setPeople(List<Person> people) {
 		this.people = people;
+	}
+
+	public List<Expense> getExpense() {
+		return expense;
+	}
+
+	public void setExpense(List<Expense> expense) {
+		this.expense = expense;
 	}
 
 	@Override

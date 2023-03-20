@@ -125,3 +125,4 @@ CREATE TABLE if not exists account (
     ON DELETE CASCADE
     ON UPDATE CASCADE
     );
+    

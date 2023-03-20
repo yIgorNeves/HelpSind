@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Cadastro de despesas</title>
+	</head>
+	<body>
+		<th:block th:fragment="content">
+			<main role="main">
+				<h3 class="font-weight-light">Cadastro de conta bancaria</h3>
+				<form th:action="@{/trustee/expense/cadastro}" th:object="${expense}" th:method="${expense.idExpense == null} ? post : put" novalidate>
+					<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+						<input type="hidden" th:field="*{idExpense}" />
+						<div class="card">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<p class="text-primary">
+										<i class="fas fa-building"></i> Informações principais
+									</p>
+									<div class="form-group col-xs-12 col-md-5">
+										<label>Valor</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+										                                   th:field="*{value}"
+										                                   placeholder="Valor da despesa." autofocus/>
+										<div class="invalid-feedback" th:errors="*{value}"></div>
+									</div>
+									
+									<div class="form-group col-xs-12 col-md-5">
+										<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+										                                   th:field="*{name}"
+										                                   placeholder="Uma breve descrição" autofocus/>
+										<div class="invalid-feedback" th:errors="*{name}"></div>
+									</div>
+								</li>
+								<li class="list-group-item">
+									<p class="text-primary">
+										<i class="bi bi-calendar-date"></i> Informações da despesa
+									</p>
+									<div class="form-group col-md-5">
+										<label for="situation">Tipo</label>
+										<select class="form-control" id="situation" name="situation" th:errorclass="is-invalid" th:field="*{situation}">
+											<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+											<option th:each="situation : ${situations}" th:value="${situation}" th:text="${situation.name}"></option>
+										</select>
+										<div class="invalid-feedback" th:errors="*{situation}"></div>
+									</div>
+									
+									<div class="form-group col-xs-12 col-md-5">
+										<label>Data de vencimento</label> <input class="form-control" type="date" th:errorclass="is-invalid"
+										                                   th:field="*{expirationDate}"
+										                                   placeholder="Informe o dia de vencimento." autofocus/>
+										<div class="invalid-feedback" th:errors="*{expirationDate}"></div>
+									</div>
+									
+									<div class="form-group col-xs-12 col-md-5">
+										<label>Data de recebimento</label> <input class="form-control" type="date" th:errorclass="is-invalid"
+										                                   th:field="*{receivingDate}"
+										                                   placeholder="Informe o dia dque ela foi paga." autofocus/>
+										<div class="invalid-feedback" th:errors="*{receivingDate}"></div>
+									</div>						
+								</li>
+								<li class="list-group-item">
+									<p class="text-primary">
+										<i class="bi bi-calendar-date"></i> Origem da despesa
+									</p>
+								</li>
+							</ul>
+						</div>
+					</fieldset>
+					<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+					<a class="btn btn-secondary" th:href="@{/trustee/expense/}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+				</form>
+			</main>
+		</th:block>
+		<th:block th:fragment="jsAdicional"></th:block>
+	</body>
+</html>
