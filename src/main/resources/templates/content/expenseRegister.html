@@ -33,10 +33,10 @@
 								</li>
 								<li class="list-group-item">
 									<p class="text-primary">
-										<i class="bi bi-calendar-date"></i> Informações da despesa
+										<i class="far fa-calendar"></i> Informações da despesa
 									</p>
 									<div class="form-group col-md-5">
-										<label for="situation">Tipo</label>
+										<label for="situation">Status do pagamento</label>
 										<select class="form-control" id="situation" name="situation" th:errorclass="is-invalid" th:field="*{situation}">
 											<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
 											<option th:each="situation : ${situations}" th:value="${situation}" th:text="${situation.name}"></option>
