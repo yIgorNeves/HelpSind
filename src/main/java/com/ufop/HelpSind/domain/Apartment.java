@@ -35,6 +35,14 @@ public class Apartment implements Serializable, Comparable<Apartment> {
 //	@OneToMany(mappedBy = "apartment", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 //	private List<Expense> expenses = new ArrayList<>();
 
+	public Apartment(Long idApartment) {
+		this.idApartment = idApartment;
+	}
+
+	public Apartment() {
+
+	}
+
 	public Long getIdApartment() {
 		return idApartment;
 	}

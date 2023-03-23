@@ -27,7 +27,7 @@
 			        <tr th:each="expense : ${expense.content}">
 			            <th scope="row" th:text="${expense.name}" >  </th>
 			            <th scope="row" th:text="${expense.issuanceDate}">  </th>
-			            <th scope="row" th:text="|R$ ${expense.value}|">  </th>
+			            <th scope="row" th:text="|R$ ${expense.total}|">  </th>
 			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/expense/{idExpense}/cadastro(idExpense=${expense.idExpense},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/expense/{idExpense}/cadastro(idExpense=${expense.idExpense})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" data-target="#modalExcluir" th:data-idobj="${expense.idExpense}" th:data-obs="${expense}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
 			        </tr>
 			    </tbody>

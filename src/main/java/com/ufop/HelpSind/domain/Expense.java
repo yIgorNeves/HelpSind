@@ -3,6 +3,8 @@ package com.ufop.HelpSind.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +15,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.ufop.HelpSind.enums.ExpenseType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.ufop.HelpSind.enums.PaymentSituation;
@@ -47,13 +52,12 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@Column(name = "receivingdate")
 	private LocalDate receivingDate;
 	
-	@NotNull
-	@Min(0)
-	@Column(name = "value")
-	private BigDecimal value;
-	
 	@Enumerated(EnumType.STRING)
 	private PaymentSituation situation;
+
+	@Column(name = "expense_type")
+	@Enumerated(EnumType.STRING)
+	private ExpenseType typeEnum;
 	
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -64,9 +68,17 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idcondominium")
 	private Condominium condominium;
-	
-	@Min(0)
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idexpensetype")
+	private com.ufop.HelpSind.domain.ExpenseType expenseType;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "expense_apartment_reading", joinColumns = @JoinColumn(name = "idexpense"), inverseJoinColumns = @JoinColumn(name = "id_apartment_reading"))
+	private Set<ApartmentReading> apartmentReadingList = new HashSet<>();
+
 	@NotNull
+	@Min(0)
 	private BigDecimal total;
 
 	public Long getIdExpense() {
@@ -109,14 +121,6 @@ public class Expense implements Serializable, Comparable<Expense>{
 		this.receivingDate = receivingDate;
 	}
 
-	public BigDecimal getValue() {
-		return value;
-	}
-
-	public void setValue(BigDecimal value) {
-		this.value = value;
-	}
-
 	public PaymentSituation getSituation() {
 		return situation;
 	}
@@ -141,12 +145,36 @@ public class Expense implements Serializable, Comparable<Expense>{
 		this.condominium = condominium;
 	}
 
+	public com.ufop.HelpSind.domain.ExpenseType getExpenseType() {
+		return expenseType;
+	}
+
+	public void setExpenseType(com.ufop.HelpSind.domain.ExpenseType expenseType) {
+		expenseType = expenseType;
+	}
+
 	public BigDecimal getTotal() {
 		return total;
 	}
 
 	public void setTotal(BigDecimal total) {
 		this.total = total;
+	}
+
+	public ExpenseType getTypeEnum() {
+		return typeEnum;
+	}
+
+	public void setTypeEnum(ExpenseType typeEnum) {
+		this.typeEnum = typeEnum;
+	}
+
+	public Set<ApartmentReading> getApartmentReadingList() {
+		return apartmentReadingList;
+	}
+
+	public void setApartmentReadingList(Set<ApartmentReading> apartmentReadingList) {
+		this.apartmentReadingList = apartmentReadingList;
 	}
 
 	@Override

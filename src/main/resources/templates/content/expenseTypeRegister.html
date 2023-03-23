@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Cadastro de despesas</title>
+	</head>
+	<body>
+		<th:block th:fragment="content">
+			<main role="main">
+				<h3 class="font-weight-light">Cadastro de despesa</h3>
+				<form th:action="@{/trustee/expenseType/cadastro}" th:object="${expenseType}" th:method="${expenseType.idExpenseType == null} ? post : put" novalidate>
+					<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+						<input type="hidden" th:field="*{idExpenseType}" />
+						<div class="card">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<p class="text-primary">
+										<i class="fas fa-building"></i> Informações principais
+									</p>
+									<div class="form-row row">
+										<div class="form-group col-xs-12 col-md-5">
+											<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid"
+											                                th:field="*{name}"
+											                                placeholder="Uma breve descrição" autofocus/>
+											<div class="invalid-feedback" th:errors="*{name}"></div>
+										</div>
+										
+										<div class="form-group col-xs-12 col-md-2">
+											<label>Valor</label> <input class="form-control" type="number" pattern="^\d*(\.\d{0,2})?$" th:errorclass="is-invalid"
+											                            th:field="*{value}"
+											                            placeholder="Valor da despesa." autofocus/>
+											<div class="invalid-feedback" th:errors="*{value}"></div>
+										</div>
+										<div class="form-group col-xs-12 col-md-5">
+											<label for="status">Status do pagamento</label>
+											<select class="form-control" id="status" name="status" th:errorclass="is-invalid"
+											        th:field="*{status}">
+												<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+												<option th:each="status : ${statusList}" th:value="${status.sigla}"
+												        th:text="${status.name}"></option>
+											</select>
+											<div class="invalid-feedback" th:errors="*{status}"></div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</fieldset>
+					<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+					<a class="btn btn-secondary" th:href="@{/trustee/expenseType/}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+				</form>
+			</main>
+		</th:block>
+		<th:block th:fragment="jsAdicional"></th:block>
+	</body>
+</html>

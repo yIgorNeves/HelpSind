@@ -1,11 +1,17 @@
 package com.ufop.HelpSind.controller;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
+import com.ufop.HelpSind.domain.ApartmentReading;
+import com.ufop.HelpSind.domain.ExpenseType;
+import com.ufop.HelpSind.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -30,45 +36,67 @@ import com.ufop.HelpSind.service.ExpenseService;
 @Controller
 @RequestMapping("trustee/expense")
 public class ExpenseController {
-	
+
 	@Autowired
 	private ExpenseService expenseService;
-	
+
 	@Autowired
 	ApartmentService apartmentService;
-	
+
+	@Autowired
+	ExpenseTypeService expenseTypeService;
+
 	@ModelAttribute("ativo")
 	public String[] ativo() {
-		return new String[] {"finance", "expenses"};
+		return new String[] { "finance", "expenses" };
 	}
-	
+
 	@ModelAttribute("apartment")
-	public List<Apartment> apartment(){
+	public List<Apartment> apartment() {
 		return apartmentService.list();
 	}
-	
-	@ModelAttribute("situation")
-	public PaymentSituation[] paymentSituation() {
-		return PaymentSituation.values();
+
+	@ModelAttribute("expensesType")
+	public List<ExpenseType> expensesType() {
+		return expenseTypeService.list();
 	}
-	
+
+	@ModelAttribute("situations")
+	public List<PaymentSituation> paymentSituation() {
+		return Arrays.asList(PaymentSituation.values());
+	}
+
+	@ModelAttribute("types")
+	public List<com.ufop.HelpSind.enums.ExpenseType> types() {
+		return Arrays.asList(com.ufop.HelpSind.enums.ExpenseType.values());
+	}
+
+	@ModelAttribute("apartmentReadingList")
+	public Set<ApartmentReading> apartmentReadingList() {
+		List<Apartment> apartmentList = apartmentService.list();
+		var apartmentReadingList = new HashSet<ApartmentReading>();
+		for (Apartment apartment : apartmentList) {
+			apartmentReadingList.add(new ApartmentReading(apartment));
+		}
+		return apartmentReadingList;
+	}
+
 	@GetMapping({ "", "/", "/lista" })
-	public ModelAndView getExpenses(@RequestParam("expense") Optional<Integer> page,
-			@RequestParam("size") Optional<Integer> size, ModelMap model) {
-		model.addAttribute("expense",
-				expenseService.listPage(PageRequest.of(page.orElse(1) - 1, size.orElse(20))));
+	public ModelAndView getExpenses(@RequestParam("expense") Optional<Integer> page, @RequestParam("size") Optional<Integer> size,
+			ModelMap model) {
+		model.addAttribute("expense", expenseService.listPage(PageRequest.of(page.orElse(1) - 1, size.orElse(20))));
 		model.addAttribute("content", "expenseList");
 		return new ModelAndView("layouts/trustee", model);
 	}
-	
+
 	@GetMapping("/cadastro")
 	public ModelAndView getExpensesRegister(@ModelAttribute("expense") Expense expense) {
 		expense.setIssuanceDate(LocalDate.now());
 		return new ModelAndView("layouts/trustee", "content", "expenseRegister");
 	}
-	
+
 	@GetMapping("/{idExpense}/cadastro")
-	public ModelAndView getExpensesRegister(@PathVariable("expense") Long idExpense, ModelMap model) {
+	public ModelAndView getExpensesRegister(@PathVariable("idExpense") Long idExpense, ModelMap model) {
 		model.addAttribute("expense", expenseService.read(idExpense));
 		model.addAttribute("content", "expenseRegister");
 		return new ModelAndView("layouts/trustee", model);

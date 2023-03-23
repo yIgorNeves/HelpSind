@@ -125,4 +125,59 @@ CREATE TABLE if not exists account (
     ON DELETE CASCADE
     ON UPDATE CASCADE
     );
-    
+
+
+create table if not exists expense_type (
+    id            bigint unsigned auto_increment
+    primary key,
+    value         decimal(9, 2)   null,
+    name          varchar(255)    null,
+    status        char            null,
+    idcondominium bigint unsigned not null,
+    constraint expense_type_ibfk_1
+    foreign key (idcondominium) references condominium (idcondominium)
+    );
+
+
+alter table expenses
+    add expense_type char null;
+
+alter table expenses
+drop column value;
+
+alter table expenses
+    add idExpenseType bigint unsigned null;
+
+constraint foreign_key_name
+        foreign key (idExpenseType) references expense_type (id);
+
+alter table expenses
+    change idExpenseType idexpensetype bigint unsigned null;
+
+
+
+CREATE TABLE if not exists apartment_reading
+(
+    id_apartment_reading BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    idapartment          BIGINT UNSIGNED NOT NULL ,
+    lastMeasurement      DECIMAL(9, 2)   NOT NULL,
+    currentMeasurement   DECIMAL(9, 2)   NOT NULL,
+    idCondominium        BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (id_apartment_reading),
+    FOREIGN KEY (idCondominium)
+    REFERENCES condominium (idCondominium)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    FOREIGN KEY (idapartment)
+    REFERENCES apartments (idapartment)
+    );
+
+CREATE TABLE if not exists expense_apartment_reading
+(
+    id_expense BIGINT UNSIGNED NOT NULL,
+    id_apartment_reading BIGINT UNSIGNED NOT NULL ,
+    FOREIGN KEY (id_apartment_reading)
+    REFERENCES apartment_reading (id_apartment_reading),
+    FOREIGN KEY (id_expense)
+    REFERENCES expenses (idExpense)
+    );
