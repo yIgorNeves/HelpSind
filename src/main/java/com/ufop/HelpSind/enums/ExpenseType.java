@@ -2,8 +2,8 @@ package com.ufop.HelpSind.enums;
 
 public enum ExpenseType {
 
-	G("Geral", "G"),
-	I("Individual", "I");
+	P("Proporcional", "P"),
+	I("Igualitario", "I");
 
 	private final String name;
 	private final String sigla;
