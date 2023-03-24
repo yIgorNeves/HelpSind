@@ -3,7 +3,9 @@ package com.ufop.HelpSind.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -75,7 +78,10 @@ public class Expense implements Serializable, Comparable<Expense>{
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "expense_apartment_reading", joinColumns = @JoinColumn(name = "idexpense"), inverseJoinColumns = @JoinColumn(name = "id_apartment_reading"))
-	private Set<ApartmentReading> apartmentReadingList = new HashSet<>();
+	private Set<ApartmentReading> apartmentReadingSet = new HashSet<>();
+
+	@Transient
+	private List<ApartmentReading> apartmentReadingList = new ArrayList<>();
 
 	@NotNull
 	@Min(0)
@@ -169,11 +175,19 @@ public class Expense implements Serializable, Comparable<Expense>{
 		this.typeEnum = typeEnum;
 	}
 
-	public Set<ApartmentReading> getApartmentReadingList() {
+	public Set<ApartmentReading> getApartmentReadingSet() {
+		return apartmentReadingSet;
+	}
+
+	public void setApartmentReadingSet(Set<ApartmentReading> apartmentReadingSet) {
+		this.apartmentReadingSet = apartmentReadingSet;
+	}
+
+	public List<ApartmentReading> getApartmentReadingList() {
 		return apartmentReadingList;
 	}
 
-	public void setApartmentReadingList(Set<ApartmentReading> apartmentReadingList) {
+	public void setApartmentReadingList(List<ApartmentReading> apartmentReadingList) {
 		this.apartmentReadingList = apartmentReadingList;
 	}
 
