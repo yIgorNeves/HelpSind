@@ -1,6 +1,7 @@
 package com.ufop.HelpSind.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Set;
 import javax.validation.Valid;
 
 import com.ufop.HelpSind.domain.ApartmentReading;
+import com.ufop.HelpSind.domain.Condominium;
 import com.ufop.HelpSind.domain.ExpenseType;
 import com.ufop.HelpSind.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,9 +74,9 @@ public class ExpenseController {
 	}
 
 	@ModelAttribute("apartmentReadingList")
-	public Set<ApartmentReading> apartmentReadingList() {
+	public List<ApartmentReading> apartmentReadingList() {
 		List<Apartment> apartmentList = apartmentService.list();
-		var apartmentReadingList = new HashSet<ApartmentReading>();
+		var apartmentReadingList = new ArrayList<ApartmentReading>();
 		for (Apartment apartment : apartmentList) {
 			apartmentReadingList.add(new ApartmentReading(apartment));
 		}
@@ -90,9 +92,16 @@ public class ExpenseController {
 	}
 
 	@GetMapping("/cadastro")
-	public ModelAndView getExpensesRegister(@ModelAttribute("expense") Expense expense) {
-		expense.setIssuanceDate(LocalDate.now());
-		return new ModelAndView("layouts/trustee", "content", "expenseRegister");
+	public ModelAndView getExpensesRegister(ModelMap model) {
+		
+		Expense expense = new Expense();
+		expense.setApartmentReadingList(apartmentReadingList());
+		
+		model.addAttribute("condominium", expense);
+		
+		model.addAttribute("content", "expenseRegister");
+		return new ModelAndView("layouts/trustee", model);
+		
 	}
 
 	@GetMapping("/{idExpense}/cadastro")

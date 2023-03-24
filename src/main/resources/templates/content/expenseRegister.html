@@ -114,11 +114,11 @@
 										
 										<div>
 											<ul>
-<!--												<li th:each="ap : ${apartmentReadingList}" >-->
-<!--													<span th:text="${ap.apartment.number}" th:value="${ap.apartment}" th:field="*{apartmentReadingList[ap.index].apartment}"></span>-->
-<!--													<input type="number" name="lastMeasurement" id="lastMeasurement" placeholder="Última medição" th:field="*{apartmentReadingList[ap.index].lastMeasurement}">-->
-<!--													<input type="number" name="lastMeasurement" id="currentMeasurement" placeholder="Medição atual" th:field="*{apartmentReadingList[ap.index].currentMeasurement}">-->
-<!--												</li>-->
+												<li th:each="ap, iStat: ${expense.apartmentReadingList}" >
+													<span th:text="${ap.apartment.number}" th:value="${ap.apartment}"></span>
+												<input type="number" name="lastMeasurement" id="lastMeasurement" placeholder="Última medição" th:field="*{apartmentReadingList[__${iStat.index}__].lastMeasurement}">
+												<input type="number" name="lastMeasurement" id="currentMeasurement" placeholder="Medição atual" th:field="*{apartmentReadingList[__${iStat.index}__].currentMeasurement}">
+											</li>
 											</ul>
 										</div>
 									</div>
