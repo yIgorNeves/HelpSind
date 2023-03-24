@@ -93,12 +93,13 @@ public class CondominiumServiceImpl implements CondominiumService{
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public Condominium read() {
-		Condominium condominium = userService.logged().getCondominium();
-		if(condominium == null || condominium.getIdCondominium() == null) {
-			throw new RuntimeException("Não foi possível recuperar o condimínio.");
-		}
-		em.detach(condominium);
-		return this.loadById(condominium.getIdCondominium());
+//		Condominium condominium = userService.logged().getCondominium();
+//		if(condominium == null || condominium.getIdCondominium() == null) {
+//			throw new RuntimeException("Não foi possível recuperar o condimínio.");
+//		}
+//		em.detach(condominium);
+//		return this.loadById(condominium.getIdCondominium());
+		return userService.logged().getCondominium();
 	}
 
 }

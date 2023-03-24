@@ -39,7 +39,6 @@ public class UserController {
 		trustee.setActive(true);
 		userService.validate(trustee, validation);
 		if (validation.hasErrors()) {
-			System.out.println(validation.getAllErrors());
 			trustee.setId(null);
 			return new ModelAndView("layouts/layoutSite", "content","register");
 		}	

@@ -28,14 +28,14 @@
 			            <th scope="row" th:text="${person.name}" >  </th>
 			            <th scope="row" th:text="${person.email}">  </th>
 			            <th scope="row" th:text="${person.cellphone}">  </th>
-			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/person/{idPerson}/cadastro(idPerson=${person.idPerson},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/person/{idPerson}/cadastro(idPerson=${person.idPerson})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" th:data-idobj="${person.idPerson}" th:data-obs="${person}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/person/{idPerson}/cadastro(idPerson=${person.idPerson},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/person/{idPerson}/cadastro(idPerson=${person.idPerson})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" th:data-idobj="${person.idPerson}" th:data-obs="${person.name}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
 			        </tr>
 			    </tbody>
 			</table>
 		</div>
 		</main>
 		
-		<div th:unless="${#lists.isEmpty(apartments)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
+		<div th:unless="${#lists.isEmpty(person)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
 			<div class="modal-dialog  modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -44,10 +44,10 @@
 							<span>&times;</span>
 						</button>
 					</div>
-					<form th:action="@{/trustee/apartments/excluir}" th:method="delete" novalidate>
+					<form th:action="@{/trustee/person/excluir}" th:method="delete" novalidate>
 						<input type="hidden" id="idObj" name="idObj" />
 						<div class="modal-body">
-							Confirma a exclusão da moradia '<span></span>'?
+							Confirma a exclusão da pessoa '<span></span>'?
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-danger">Excluir</button>
