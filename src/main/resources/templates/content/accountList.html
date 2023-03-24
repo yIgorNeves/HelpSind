@@ -28,7 +28,7 @@
 			            <th scope="row" th:text="${account.type}" >  </th>
 			            <th scope="row" th:text="${account.description}">  </th>
 			            <th scope="row" th:text="|R$ ${account.currentBalance}|">  </th>
-			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" data-target="#modalExcluir" th:data-idobj="${account.idAccount}" th:data-obs="${account}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+			            <td><a class="btn btn-outline-secondary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/trustee/account/{idAccount}/cadastro(idAccount=${account.idAccount})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" data-target="#modalExcluir" th:data-idobj="${account.idAccount}" th:data-obs="${account.description}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
 			        </tr>
 			    </tbody>
 			</table>
