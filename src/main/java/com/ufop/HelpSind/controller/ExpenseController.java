@@ -97,7 +97,7 @@ public class ExpenseController {
 		Expense expense = new Expense();
 		expense.setApartmentReadingList(apartmentReadingList());
 		
-		model.addAttribute("condominium", expense);
+		model.addAttribute("expense", expense);
 		
 		model.addAttribute("content", "expenseRegister");
 		return new ModelAndView("layouts/trustee", model);
