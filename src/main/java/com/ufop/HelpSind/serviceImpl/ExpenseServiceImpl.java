@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ufop.HelpSind.domain.Apartment;
+import com.ufop.HelpSind.domain.ApartmentReading;
+import com.ufop.HelpSind.enums.ExpenseType;
+import com.ufop.HelpSind.service.ApartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,16 +27,19 @@ import com.ufop.HelpSind.service.UserService;
 @Service
 @Transactional
 public class ExpenseServiceImpl implements ExpenseService {
-	
+
 	@Autowired
 	private ExpenseDao expenseDao;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private ApartmentService apartmentService;
+
 	@Override
 	public void save(Expense expense) {
-		if(expense.getIdExpense() == null) {
+		if (expense.getIdExpense() == null) {
 			standard(expense);
 			expenseDao.save(expense);
 		}
@@ -120,6 +127,44 @@ public class ExpenseServiceImpl implements ExpenseService {
 		if (expense.getCondominium() == null) {
 			expense.setCondominium(userService.logged().getCondominium());
 		}
+
+		this.createApartmentReadingSet(expense);
+		this.creatExpensesForApartments(expense);
+
 	}
 
+	@Transactional
+	public void creatExpensesForApartments(Expense expense) {
+		if(Boolean.TRUE.equals(expense.getChild())) return;
+		var apartments = apartmentService.list();
+		if (ExpenseType.I.getSigla().equalsIgnoreCase(expense.getTypeEnum().getSigla())) {
+
+			BigDecimal total = expense.getTotal().divide(BigDecimal.valueOf(apartments.size()));
+			for (Apartment apartment : apartments) {
+				this.save(new Expense(expense, apartment, total));
+			}
+
+		}else if(ExpenseType.P.getSigla().equalsIgnoreCase(expense.getTypeEnum().getSigla())){
+			BigDecimal fixedValue = expense.getExpenseType().getValue(); // se for null fazer um findById na ExpenseTypeService
+			for(Apartment apartment :  apartments){
+				var apartmentReading = expense.getApartmentReadingList().stream().filter(el -> el.getApartment().getIdApartment().equals(apartment.getIdApartment())).findFirst().get();
+				BigDecimal diff = apartmentReading.getCurrentMeasurement().subtract(apartmentReading.getLastMeasurement());
+			}
+		}
+	}
+
+	private void createApartmentReadingSet(Expense expense) {
+
+		if (ExpenseType.I.getSigla().equalsIgnoreCase(expense.getTypeEnum().getSigla())){
+			return;
+		}
+		if (expense.getApartmentReadingList() == null || expense.getApartmentReadingList().isEmpty()) {
+			return;
+		}
+
+		for (ApartmentReading apartmentReading : expense.getApartmentReadingList()) {
+			apartmentReading.setCondominium(userService.logged().getCondominium());
+			expense.getApartmentReadingSet().add(apartmentReading);
+		}
+	}
 }

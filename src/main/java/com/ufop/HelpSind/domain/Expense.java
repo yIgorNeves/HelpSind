@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -62,7 +63,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@Enumerated(EnumType.STRING)
 	private ExpenseType typeEnum;
 	
-	@NotNull
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idapartment")
 	private Apartment apartment;
@@ -76,7 +77,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@JoinColumn(name = "idexpensetype")
 	private com.ufop.HelpSind.domain.ExpenseType expenseType;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "expense_apartment_reading", joinColumns = @JoinColumn(name = "idexpense"), inverseJoinColumns = @JoinColumn(name = "id_apartment_reading"))
 	private Set<ApartmentReading> apartmentReadingSet = new HashSet<>();
 
@@ -86,6 +87,43 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@NotNull
 	@Min(0)
 	private BigDecimal total;
+
+	@Transient
+	private Boolean child = Boolean.FALSE;
+
+	public Expense() {
+	}
+
+	public Expense(String name, LocalDate issuanceDate, LocalDate expirationDate, LocalDate receivingDate, PaymentSituation situation,
+			ExpenseType typeEnum, Apartment apartment, Condominium condominium, com.ufop.HelpSind.domain.ExpenseType expenseType,
+			BigDecimal total) {
+		this.name = name;
+		this.issuanceDate = issuanceDate;
+		this.expirationDate = expirationDate;
+		this.receivingDate = receivingDate;
+		this.situation = situation;
+		this.typeEnum = typeEnum;
+		this.apartment = apartment;
+		this.condominium = condominium;
+		this.expenseType = expenseType;
+		this.total = total;
+	}
+
+	public Expense(Expense expense, Apartment apartment, BigDecimal total) {
+		this.name = expense.getName();
+		this.issuanceDate = expense.getIssuanceDate();
+		this.expirationDate = expense.getExpirationDate();
+		this.receivingDate = expense.getReceivingDate();
+		this.situation = expense.getSituation();
+		this.typeEnum = expense.getTypeEnum();
+		this.apartment = apartment;
+		this.condominium = expense.getCondominium();
+		this.expenseType = expense.getExpenseType();
+		this.total = total;
+		this.child = true;
+	}
+	
+	
 
 	public Long getIdExpense() {
 		return idExpense;
@@ -189,6 +227,14 @@ public class Expense implements Serializable, Comparable<Expense>{
 
 	public void setApartmentReadingList(List<ApartmentReading> apartmentReadingList) {
 		this.apartmentReadingList = apartmentReadingList;
+	}
+
+	public Boolean getChild() {
+		return child;
+	}
+
+	public void setChild(Boolean child) {
+		this.child = child;
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.ufop.HelpSind.enums;
 
 public enum ExpenseType {
 
-	G("Geral", "G"),
+	P("Geral", "G"),
 	I("Individual", "I");
 
 	private final String name;

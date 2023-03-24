@@ -27,7 +27,7 @@ public class ApartmentReading implements Serializable, Comparable<ApartmentReadi
 	private Condominium condominium;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idapartment")
+	@JoinColumn(name = "id_apartment")
 	private Apartment apartment;
 
 	private BigDecimal lastMeasurement;

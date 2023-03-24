@@ -159,16 +159,16 @@ alter table expenses
 CREATE TABLE if not exists apartment_reading
 (
     id_apartment_reading BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-    idapartment          BIGINT UNSIGNED NOT NULL ,
-    lastMeasurement      DECIMAL(9, 2)   NOT NULL,
-    currentMeasurement   DECIMAL(9, 2)   NOT NULL,
-    idCondominium        BIGINT UNSIGNED NOT NULL,
+    id_apartment          BIGINT UNSIGNED NOT NULL ,
+    last_measurement      DECIMAL(9, 2)   NOT NULL,
+    current_measurement   DECIMAL(9, 2)   NOT NULL,
+    id_condominium        BIGINT UNSIGNED NOT NULL,
     PRIMARY KEY (id_apartment_reading),
-    FOREIGN KEY (idCondominium)
+    FOREIGN KEY (id_condominium)
     REFERENCES condominium (idCondominium)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    FOREIGN KEY (idapartment)
+    FOREIGN KEY (id_apartment)
     REFERENCES apartments (idapartment)
     );
 
@@ -181,3 +181,6 @@ CREATE TABLE if not exists expense_apartment_reading
     FOREIGN KEY (id_expense)
     REFERENCES expenses (idExpense)
     );
+
+alter table expenses
+    modify idapartment bigint unsigned null;

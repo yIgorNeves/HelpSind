@@ -121,7 +121,9 @@ public class ExpenseController {
 		expenseService.save(expense);
 		return new ModelAndView("redirect:/trustee/expense");
 	}
-	
+
+
+
 	@PutMapping("/cadastro")
 	public ModelAndView putExpensesRegister(@Valid @ModelAttribute("idExpense") Expense expense, BindingResult validation,
 			ModelMap model) {
