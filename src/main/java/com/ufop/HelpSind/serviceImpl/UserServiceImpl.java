@@ -110,9 +110,7 @@ public class UserServiceImpl implements UserService {
 				validation.rejectValue("username", "Unique");
 			}
 		}
-		System.out.println("usuario ativo " + user.getActive());
 		if(!user.getActive()) {
-			System.out.println();
 			validation.rejectValue("active", "AssertTrue");
 		}
 		
@@ -124,7 +122,7 @@ public class UserServiceImpl implements UserService {
 		if (auth == null || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
 			return null;
 		}
-		return userDao.findOneByName(auth.getName());
+		return userDao.findOneByUsername(auth.getName());
 	}
 
 }

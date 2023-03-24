@@ -13,5 +13,5 @@ public interface UserDao extends PagingAndSortingRepository<User, Long>, CrudRep
 	
 	Boolean existsByUsernameAndIdNot (String username, Long id);
 	
-	User findOneByName(String name);
+	User findOneByUsername(String name);
 }
