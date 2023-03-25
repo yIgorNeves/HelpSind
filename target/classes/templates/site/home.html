@@ -20,7 +20,7 @@
 					<div class="col-xs-12 col-sm-4 mt-1">
 						<div class="card bg-warning-subtle">
 							<div class="card-body">
-								<p class="card-title">14</p>
+								<p class="card-title" th:text="${totalizer.toPay}"></p>
 								<h5 class="card-text">Contas a pagar</h5>
 							</div>
 						</div>
@@ -28,7 +28,7 @@
 					<div class="col-xs-12 col-sm-4 mt-1">
 						<div class="card bg-success-subtle">
 							<div class="card-body">
-								<p class="card-title">35</p>
+								<p class="card-title" th:text="${totalizer.paid}"></p>
 								<h5 class="card-text">Contas pagas</h5>
 							</div>
 						</div>
@@ -36,7 +36,7 @@
 					<div class="col-xs-12 col-sm-4 mt-1">
 						<div class="card bg-danger-subtle">
 							<div class="card-body">
-								<p class="card-title">2</p>
+								<p class="card-title" th:text="${totalizer.overdue}"></p>
 								<h5 class="card-text">Contas Vencidas</h5>
 							</div>
 						</div>

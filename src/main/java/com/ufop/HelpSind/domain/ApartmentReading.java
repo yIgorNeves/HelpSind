@@ -23,7 +23,7 @@ public class ApartmentReading implements Serializable, Comparable<ApartmentReadi
 	private Long idApartmentReading;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idcondominium")
+	@JoinColumn(name = "id_condominium")
 	private Condominium condominium;
 
 	@ManyToOne(fetch = FetchType.LAZY)

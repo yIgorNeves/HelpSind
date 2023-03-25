@@ -1,6 +1,7 @@
 package com.ufop.HelpSind.serviceImpl;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ import com.ufop.HelpSind.domain.Apartment;
 import com.ufop.HelpSind.domain.ApartmentReading;
 import com.ufop.HelpSind.enums.ExpenseType;
 import com.ufop.HelpSind.service.ApartmentService;
+import com.ufop.HelpSind.service.ExpenseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,11 +39,17 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Autowired
 	private ApartmentService apartmentService;
 
+	@Autowired
+	private ExpenseTypeService expenseTypeService;
 	@Override
 	public void save(Expense expense) {
 		if (expense.getIdExpense() == null) {
 			standard(expense);
-			expenseDao.save(expense);
+			Expense persisted = expenseDao.save(expense);
+
+			new Thread(()->{
+				this.creatExpensesForApartments(persisted);
+			}).run();
 		}
 	}
 
@@ -72,7 +80,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public void update(Expense expense) {
 		standard(expense);
-		expenseDao.save(expense);		
+		expenseDao.save(expense);
 	}
 
 	@Override
@@ -115,7 +123,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 		
 		return exepenses;
 	}
-	
+
+
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public void standard(Expense expense) {
 		if (expense.getIssuanceDate() == null) {
@@ -129,8 +138,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 		}
 
 		this.createApartmentReadingSet(expense);
-		this.creatExpensesForApartments(expense);
-
 	}
 
 	@Transactional
@@ -144,14 +151,44 @@ public class ExpenseServiceImpl implements ExpenseService {
 				this.save(new Expense(expense, apartment, total));
 			}
 
-		}else if(ExpenseType.P.getSigla().equalsIgnoreCase(expense.getTypeEnum().getSigla())){
-			BigDecimal fixedValue = expense.getExpenseType().getValue(); // se for null fazer um findById na ExpenseTypeService
-			for(Apartment apartment :  apartments){
-				var apartmentReading = expense.getApartmentReadingList().stream().filter(el -> el.getApartment().getIdApartment().equals(apartment.getIdApartment())).findFirst().get();
-				BigDecimal diff = apartmentReading.getCurrentMeasurement().subtract(apartmentReading.getLastMeasurement());
-			}
+		}else if(expense.getApartment() == null && ExpenseType.P.getSigla().equalsIgnoreCase(expense.getTypeEnum().getSigla())){
+
+			BigDecimal fixedValue = expense.getExpenseType().getValue(); //valor minimo da despesa
+
+			BigDecimal sumAllLastMeansurement = expense.getApartmentReadingSet().stream().map(apartmentReading->apartmentReading.getLastMeasurement()).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+			BigDecimal sumAllCurrentMeansurement = expense.getApartmentReadingSet().stream().map(apartmentReading->apartmentReading.getCurrentMeasurement()).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
+
+			BigDecimal c30 = expense.getLastMeasurement().subtract(sumAllLastMeansurement);
+			BigDecimal d30 = expense.getCurrentMeasurement().subtract(sumAllCurrentMeansurement);
+
+			BigDecimal diffC30D30 = d30.subtract(c30);
+
+
+			expense.getApartmentReadingSet().stream().forEach(apartmentReading -> {
+				final BigDecimal diff = apartmentReading.getCurrentMeasurement().subtract(apartmentReading.getLastMeasurement());
+				final BigDecimal total = (diffC30D30.divide(BigDecimal.valueOf(apartments.size()))).add(diff);
+				final BigDecimal proporcionalValue = getFinalValue(total, fixedValue, expense);
+
+				this.save(new Expense(expense, apartmentReading.getApartment(), proporcionalValue, apartmentReading.getLastMeasurement(), apartmentReading.getCurrentMeasurement()));
+			});
+
 		}
 	}
+
+	private BigDecimal getFinalValue(BigDecimal individualTotal, BigDecimal minValue, Expense expense){
+		if (individualTotal.compareTo(BigDecimal.valueOf(5)) < 0){
+			return minValue;
+		}
+
+		var expenseMeasurementDiff = (expense.getLastMeasurement().subtract(expense.getCurrentMeasurement()));
+
+		if(expenseMeasurementDiff.compareTo(BigDecimal.ZERO)<0){
+			expenseMeasurementDiff = expenseMeasurementDiff.multiply(BigDecimal.valueOf(-1));
+		}
+
+		return expense.getTotal().divide(expenseMeasurementDiff,2, RoundingMode.UP).multiply(individualTotal.setScale(2,RoundingMode.HALF_UP).subtract(BigDecimal.valueOf(5))).add(minValue).setScale(2, RoundingMode.HALF_UP);
+	}
+
 
 	private void createApartmentReadingSet(Expense expense) {
 
@@ -165,6 +202,56 @@ public class ExpenseServiceImpl implements ExpenseService {
 		for (ApartmentReading apartmentReading : expense.getApartmentReadingList()) {
 			apartmentReading.setCondominium(userService.logged().getCondominium());
 			expense.getApartmentReadingSet().add(apartmentReading);
+		}
+	}
+
+	@Override
+	public Totalizer getTotalizer() {
+		Condominium condominium = userService.logged().getCondominium();
+		Integer toPay = expenseDao.countAllByCondominiumAndSituationAndExpirationDateAfter(condominium,PaymentSituation.N,LocalDate.now().plusDays(1L));
+		Integer paid = expenseDao.countAllByCondominiumAndSituationAndExpirationDateAfter(condominium,PaymentSituation.P,LocalDate.now().plusDays(1L));
+		Integer overdue = expenseDao.countAllByCondominiumAndSituationAndExpirationDateBefore(condominium,PaymentSituation.N,LocalDate.now());
+		return new Totalizer(toPay,paid,overdue);
+	}
+
+
+
+	public static class Totalizer {
+		private Integer toPay;
+		private Integer paid;
+		private Integer overdue;
+
+		public Totalizer() {
+		}
+
+		public Totalizer(Integer toPay, Integer paid, Integer overdue) {
+			this.toPay = toPay;
+			this.paid = paid;
+			this.overdue = overdue;
+		}
+
+		public Integer getToPay() {
+			return toPay;
+		}
+
+		public void setToPay(Integer toPay) {
+			this.toPay = toPay;
+		}
+
+		public Integer getPaid() {
+			return paid;
+		}
+
+		public void setPaid(Integer paid) {
+			this.paid = paid;
+		}
+
+		public Integer getOverdue() {
+			return overdue;
+		}
+
+		public void setOverdue(Integer overdue) {
+			this.overdue = overdue;
 		}
 	}
 }

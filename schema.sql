@@ -184,3 +184,15 @@ CREATE TABLE if not exists expense_apartment_reading
 
 alter table expenses
     modify idapartment bigint unsigned null;
+
+alter table expenses
+    add column last_measurement DECIMAL(9, 2);
+
+alter table expenses
+    add column current_measurement DECIMAL(9, 2);
+
+alter table expense_apartment_reading
+    change id_expense idexpense bigint unsigned not null;
+
+alter table expenses
+    modify total decimal(10, 2) null;

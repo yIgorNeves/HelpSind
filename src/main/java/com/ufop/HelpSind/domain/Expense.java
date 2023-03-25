@@ -21,11 +21,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ufop.HelpSind.enums.ExpenseType;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -91,6 +93,10 @@ public class Expense implements Serializable, Comparable<Expense>{
 	@Transient
 	private Boolean child = Boolean.FALSE;
 
+	private BigDecimal lastMeasurement;
+
+	private BigDecimal currentMeasurement;
+
 	public Expense() {
 	}
 
@@ -110,7 +116,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	}
 
 	public Expense(Expense expense, Apartment apartment, BigDecimal total) {
-		this.name = expense.getName();
+		this.name = this.getChildName(expense, apartment);
 		this.issuanceDate = expense.getIssuanceDate();
 		this.expirationDate = expense.getExpirationDate();
 		this.receivingDate = expense.getReceivingDate();
@@ -122,7 +128,22 @@ public class Expense implements Serializable, Comparable<Expense>{
 		this.total = total;
 		this.child = true;
 	}
-	
+	public Expense(Expense expense, Apartment apartment, BigDecimal total , BigDecimal lastMeasurement, BigDecimal currentMeasurement) {
+		this.name = this.getChildName(expense,apartment);
+		this.issuanceDate = expense.getIssuanceDate();
+		this.expirationDate = expense.getExpirationDate();
+		this.receivingDate = expense.getReceivingDate();
+		this.situation = expense.getSituation();
+		this.typeEnum = expense.getTypeEnum();
+		this.apartment = apartment;
+		this.condominium = expense.getCondominium();
+		this.expenseType = expense.getExpenseType();
+		this.lastMeasurement = lastMeasurement;
+		this.currentMeasurement = currentMeasurement;
+		this.total = total;
+		this.child = true;
+	}
+
 	
 
 	public Long getIdExpense() {
@@ -194,7 +215,7 @@ public class Expense implements Serializable, Comparable<Expense>{
 	}
 
 	public void setExpenseType(com.ufop.HelpSind.domain.ExpenseType expenseType) {
-		expenseType = expenseType;
+		this.expenseType = expenseType;
 	}
 
 	public BigDecimal getTotal() {
@@ -237,10 +258,53 @@ public class Expense implements Serializable, Comparable<Expense>{
 		this.child = child;
 	}
 
+	public BigDecimal getLastMeasurement() {
+		return lastMeasurement;
+	}
+
+	public void setLastMeasurement(BigDecimal lastMeasurement) {
+		this.lastMeasurement = lastMeasurement;
+	}
+
+	public BigDecimal getCurrentMeasurement() {
+		return currentMeasurement;
+	}
+
+	public void setCurrentMeasurement(BigDecimal currentMeasurement) {
+		this.currentMeasurement = currentMeasurement;
+	}
+
 	@Override
 	public int compareTo(Expense o) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@PrePersist
+	void onPersist(){
+		this.getApartmentReadingSet().forEach(each ->{
+			each.setCondominium(this.getCondominium());
+		});
+	}
+
+	private String getChildName(Expense expense, Apartment apartment){
+		String name = expense.getName() + " (Apartamento: %s)";
+		return String.format(name, apartment.getNumber());
+	}
+
+	@JsonProperty
+	public String getTypeEnumComplete(){
+		return ExpenseType.P.getSigla().equals(this.typeEnum.getSigla()) ?  "Proporcional" : "Igualitário";
+	}
+
+	@JsonProperty
+	public String getSituationComplete(){
+		if (PaymentSituation.P.getSigla().equals(this.situation.getSigla())){
+			return "Pago";
+		} else if (this.expirationDate != null && this.expirationDate.isBefore(LocalDate.now())) {
+			return "Vencido";
+		}else {
+			return "Não Pago";
+		}
+	}
 }

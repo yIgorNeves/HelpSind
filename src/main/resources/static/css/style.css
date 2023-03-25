@@ -54,3 +54,36 @@ p{
 .option{
     width: 200px !important;
 }
+
+
+.th-warning {
+    background-color: #ffff0040 !important;
+    color: #a9a91c;
+    text-align: center;
+    border-radius: 15px;
+    width: 100%;
+}
+.th-success {
+    background-color: rgba(34, 255, 0, 0.25) !important;
+    color: #1ca91e;
+    text-align: center;
+    border-radius: 15px;
+    width: 100%;
+}
+.th-danger {
+    background-color: rgba(255, 0, 0, 0.25) !important;
+    color: #a91c1c;
+    text-align: center;
+    border-radius: 15px;
+    width: 100%;
+}
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ul {
+    list-style-type: none;
+}

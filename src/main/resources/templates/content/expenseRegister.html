@@ -21,6 +21,7 @@
 										<div class="form-group col-xs-12 col-md-5">
 											<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid"
 											                                th:field="*{name}"
+											                                th:required="true"
 											                                placeholder="Uma breve descrição" autofocus/>
 											<div class="invalid-feedback" th:errors="*{name}"></div>
 										</div>
@@ -29,6 +30,7 @@
 											<label>Valor</label> <input class="form-control" type="number" pattern="^\d*(\.\d{0,2})?$"
 											                            th:errorclass="is-invalid"
 											                            th:field="*{total}"
+											                            th:required="true"
 											                            placeholder="Valor da despesa." autofocus/>
 											<div class="invalid-feedback" th:errors="*{total}"></div>
 										</div>
@@ -49,25 +51,42 @@
 									<p class="text-primary">
 										<i class="far fa-calendar"></i> Informações da despesa
 									</p>
-									<div class=".row">
+									<div class="row">
 										
 										
-										<div class="form-group col-xs-12 col-md-5">
-											<label>Data de vencimento</label> <input class="form-control" type="date"
-											                                         th:errorclass="is-invalid"
-											                                         th:field="*{expirationDate}"
-											                                         placeholder="Informe o dia de vencimento." autofocus/>
-											<div class="invalid-feedback" th:errors="*{expirationDate}"></div>
-										</div>
-										
-										<div class="form-group col-xs-12 col-md-5">
+										<div class="form-group col-xs-12 col-md-3">
+											
 											<label>Data de recebimento</label> <input class="form-control" type="date"
 											                                          th:errorclass="is-invalid"
 											                                          th:field="*{receivingDate}"
+											                                          th:required="true"
 											                                          placeholder="Informe o dia dque ela foi paga."
 											                                          autofocus/>
 											<div class="invalid-feedback" th:errors="*{receivingDate}"></div>
 										</div>
+										<div class="form-group col-xs-12 col-md-3">
+											<label>Data de vencimento</label> <input class="form-control" type="date"
+											                                         th:errorclass="is-invalid"
+											                                         th:field="*{expirationDate}"
+											                                         th:required="true"
+											                                         placeholder="Informe o dia de vencimento." autofocus/>
+											<div class="invalid-feedback" th:errors="*{expirationDate}"></div>
+										</div>
+										
+										<div class="col-md-3">
+											<label>Última medição</label> <input class="form-control" type="number"
+											                                     th:required="true"
+											                                     name="expenseLastMeasurement" id="expenseLastMeasurement"
+											                                     th:field="*{lastMeasurement}">
+										</div>
+										<div class="col-md-3">
+											<label>Medição atual</label> <input class="form-control" type="number"
+											                                    name="expenseCurrentMeasurement"
+											                                    id="expenseCurrentMeasurement"
+											                                    th:required="true"
+											                                    th:field="*{currentMeasurement}">
+										</div>
+									
 									</div>
 								
 								</li>
@@ -76,50 +95,79 @@
 										<i class="bi bi-calendar-date"></i> Origem da despesa
 									</p>
 									<div class="row">
-										
-										<label for="situation">Tipo de Rateio</label>
-										<select class="form-control" id="situation" name="situation" th:errorclass="is-invalid"
-										        th:field="*{typeEnum}">
-											<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
-											<option th:each="ty : ${types}" th:value="${ty.sigla}"
-											        th:text="${ty.name}"></option>
-										</select>
-										<div class="invalid-feedback" th:errors="*{typeEnum}"></div>
-									</div>
-									<div th:unless="*{typeEnum} == 'G'" class="row">
-										<div class="form-group col-xs-12 col-md-5">
-											<label for="situation">Apartamento </label>
-											<select class="form-control" id="apartment" name="situation" th:errorclass="is-invalid"
-											        th:field="*{apartment}">
-												<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
-												<option th:each="ap : ${apartment}" th:value="${ap.idApartment}"
-												        th:text="${ap.number} + ' - ' + ${ap.person.name}"></option>
-											</select>
-											<div class="invalid-feedback" th:errors="*{apartment}"></div>
-										</div>
-									</div>
-									<div th:unless="*{typeEnum} == 'G'">
-										<div class="row">
-											<div class="col-xs-12 col-md-4">
-												<label for="situation">Tipo de Despesa</label>
-												<select class="form-control" id="expenseType" name="situation" th:errorclass="is-invalid"
-												        th:field="*{expenseType}">
+										<div th:if="${param.somenteLeitura}">
+											<div class="form-group col-xs-12 col-md-3">
+												<label for="situation">Apartamento </label>
+												<select class="form-control" id="apartment" name="situation" th:errorclass="is-invalid"
+												        th:field="*{apartment}">
 													<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
-													<option th:each="et : ${expensesType}" th:value="${et.idExpenseType}"
-													        th:text="${et.name}"></option>
+													<option th:each="ap : ${apartment}" th:value="${ap.idApartment}"
+													        th:text="${ap.number} + ' - ' + ${ap.person.name}"></option>
 												</select>
-												<div class="invalid-feedback" th:errors="*{expenseType}"></div>
+												<div class="invalid-feedback" th:errors="*{apartment}"></div>
 											</div>
 										</div>
 										
+										<div class="col-xs-12 col-md-4">
+											<label for="situation">Tipo de Rateio</label>
+											<select class="form-control" id="situation" name="situation" th:required="true" th:errorclass="is-invalid"
+											        th:field="*{typeEnum}">
+												<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+												<option th:each="ty : ${types}" th:value="${ty.sigla}"
+												        th:text="${ty.name}"></option>
+											</select>
+											<div class="invalid-feedback" th:errors="*{typeEnum}"></div>
+										</div>
+										<div class="col-xs-12 col-md-4">
+											<label for="situation">Tipo de Despesa</label>
+											<select class="form-control" id="expenseType" name="situation" th:errorclass="is-invalid"
+											        th:field="*{expenseType}">
+												<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+												<option th:each="et : ${expensesType}" th:value="${et.idExpenseType}"
+												        th:text="${et.name}"></option>
+											</select>
+											<div class="invalid-feedback" th:errors="*{expenseType}"></div>
+										</div>
+									</div>
+									<div>
 										<div>
-											<ul>
-												<li th:each="ap, iStat: ${expense.apartmentReadingList}" >
-													<span th:text="${ap.apartment.number}" th:value="${ap.apartment}"></span>
-												<input type="number" name="lastMeasurement" id="lastMeasurement" placeholder="Última medição" th:field="*{apartmentReadingList[__${iStat.index}__].lastMeasurement}">
-												<input type="number" name="lastMeasurement" id="currentMeasurement" placeholder="Medição atual" th:field="*{apartmentReadingList[__${iStat.index}__].currentMeasurement}">
-											</li>
-											</ul>
+											<p class="text-primary">
+												<i class="bi bi-calendar-date"></i> Apartamentos
+											</p>
+											<div class="row">
+												<ul class="list-group list-group-flush">
+													<li class="list-group-item" th:each="ap, iStat: ${expense.apartmentReadingList}">
+														<div class="row">
+															<div class="col-md-2">
+																<label>Nº do apartamento </label>
+																<input type="text" style="display: none"
+																       name="arApartment" th:id="'arApartement' +__${iStat.index}__"
+																
+																       th:value="${ap.apartment.idApartment}"
+																       th:field="*{apartmentReadingList[__${iStat.index}__].apartment}"/>
+																<p th:text="${ap.apartment.number}">
+																</p>
+															</div>
+															<div class="col-md-3">
+																<label>Última medição</label><input class="form-control" type="number"
+																                                    name="lastMeasurement"
+																                                    th:id="'lastMeasurement'+__${iStat.index}__"
+																                                    th:required="true"
+																                                    th:field="*{apartmentReadingList[__${iStat.index}__].lastMeasurement}"/>
+															
+															</div>
+															<div class="col-md-3">
+																<label>Medição atual</label>
+																<input class="form-control" type="number" name="currentMeasurement"
+																       th:id="'currentMeasurement' +__${iStat.index}__"
+																       th:required="true"
+																       th:field="*{apartmentReadingList[__${iStat.index}__].currentMeasurement}"/>
+															</div>
+														</div>
+													</li>
+												</ul>
+											</div>
+										
 										</div>
 									</div>
 								</li>

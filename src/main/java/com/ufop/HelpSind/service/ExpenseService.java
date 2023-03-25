@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.ufop.HelpSind.domain.Expense;
+import com.ufop.HelpSind.serviceImpl.ExpenseServiceImpl;
+
+import static com.ufop.HelpSind.serviceImpl.ExpenseServiceImpl.*;
 
 public interface ExpenseService extends CrudService<Expense, Long> {
 	
@@ -12,5 +15,7 @@ public interface ExpenseService extends CrudService<Expense, Long> {
 
 	
 		public List<Expense> listarInadimplencia();
+
+		Totalizer getTotalizer();
 
 }
