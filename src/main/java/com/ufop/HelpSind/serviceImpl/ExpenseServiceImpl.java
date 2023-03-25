@@ -207,6 +207,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	@Override
 	public Totalizer getTotalizer() {
+		if(userService.logged() == null) return new Totalizer();
 		Condominium condominium = userService.logged().getCondominium();
 		Integer toPay = expenseDao.countAllByCondominiumAndSituationAndExpirationDateAfter(condominium,PaymentSituation.N,LocalDate.now().plusDays(1L));
 		Integer paid = expenseDao.countAllByCondominiumAndSituationAndExpirationDateAfter(condominium,PaymentSituation.P,LocalDate.now().plusDays(1L));
