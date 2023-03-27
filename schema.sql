@@ -196,3 +196,29 @@ alter table expense_apartment_reading
 
 alter table expenses
     modify total decimal(10, 2) null;
+
+
+create view reports as select uuid() as uuid ,D.*
+                       from (select expenses.idExpense as id_expense,
+                                    expenses.name                                                                             as expense_name,
+                                    expenses.receivingDate                                                                    as expense_receiving_date,
+                                    expenses.expirationDate                                                                   as expense_expiration_date,
+                                    case when expenses.expense_type = 'P' then 'Proporcinal' else 'Igualitário' end           as type,
+                                    case when expenses.situation = 'N' then 'Não Pago' else 'Pago' end                        as expense_situation,
+                                    expenses.total                                                                            as total,
+                                    et.name                                                                                   as expense_type,
+                                    ar.id_apartment_reading,
+                                    case when ar.id_apartment_reading is not null then a.idApartment else ape.idApartment end as id_apartment,
+                                    case when ar.id_apartment_reading is not null then a.number else ape.number end           as apartment_number,
+                                    case when ar.id_apartment_reading is not null then p.idPerson else apep.idPerson end      as id_person,
+                                    case when ar.id_apartment_reading is not null then p.name else apep.name end              as person_name,
+                                    expenses.idcondominium
+                             from expenses
+                                      left join expense_apartment_reading ear on expenses.idExpense = ear.idexpense
+                                      left  join apartment_reading ar on ear.id_apartment_reading = ar.id_apartment_reading
+                                      left join apartments a on ar.id_apartment = a.idApartment
+                                      left join person p on a.idPerson = p.idPerson
+                                      left join apartments ape on ape.idApartment = expenses.idapartment
+                                      left join person apep on ape.idPerson = apep.idPerson
+                                      left join expense_type et on expenses.idexpensetype = et.id
+                                      left join condominium c on a.idCondominium = c.idCondominium) D;
