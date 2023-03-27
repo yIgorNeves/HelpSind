@@ -196,3 +196,23 @@ alter table expense_apartment_reading
 
 alter table expenses
     modify total decimal(10, 2) null;
+    
+alter table expenses
+    add column repeatable boolean;
+
+CREATE EVENT repeat_expenses
+ON SCHEDULE EVERY 1 MONTH STARTS '2023-03-31 00:00:00'
+DO
+INSERT INTO expense (idApartment, value, name, situation, idCondominium, issuanceDate, expirationDate)
+SELECT 
+	idApartment,
+    value,
+    name,
+    situation,
+    idCondominium,
+    LAST_DAY(DATE_ADD(issuanceDate, INTERVAL 1 MONTH)),
+    LAST_DAY(DATE_ADD(expirationDate, INTERVAL 1 MONTH))
+FROM
+    expense
+WHERE
+    repeatable = 1 AND DAYOFMONTH(NOW()) = 31;

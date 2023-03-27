@@ -91,8 +91,7 @@ public class PersonController {
 	}
 	
 	@PutMapping(value = "/cadastro")
-	public ModelAndView putPerson(@Valid @ModelAttribute("pessoa") Person person,
-			BindingResult validation, ModelMap model) {
+	public ModelAndView putPerson(@Valid @ModelAttribute("pessoa") Person person, BindingResult validation, ModelMap model) {
 		personService.validate(person, validation);
 		if (validation.hasErrors()) {
 			model.addAttribute("content", "personRegister");
